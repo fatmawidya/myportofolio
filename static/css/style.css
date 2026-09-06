@@ -266,38 +266,16 @@ h1, .brand {
             "details";
     }
 
-   /* Perkecil foto & perjelas frame polka-dot */
-    .hero-photo,
-    /* Frame polka-dot luar */
-.photo-block {
-    max-width: 180px;       /* Ukuran pas buat layar HP */
-    background-color: var(--accent);
-    background-image: 
-        radial-gradient(var(--accent-green) 15%, transparent 15%), 
-        radial-gradient(var(--accent-green) 15%, transparent 15%);
-    background-size: 20px 20px;
-    background-position: 0 0, 10px 10px;
-    border-radius: 12px;
-    border: 2px solid var(--ink);
-    
-    /* Flexbox biar elemen di dalemnya pas di tengah */
-    display: flex;         
-    justify-content: center; /* Kiri-kanan simetris */
-    align-items: center;    /* Atas-bawah simetris */
-    padding: 0.8rem;        /* Ketebalan list frame */
-    
-    margin: 0 auto 1rem;    /* Posisi tengah + jarak ke bawah */
-}
+   .hero-photo {
+        max-width: 190px;    /* Ukuran frame luar diperkecil */
+        padding: 8px;        /* Frame/border polka-dot dipertipis */
+        margin: 1rem auto 1.5rem; /* Dikasih jarak biar ga nabrak nama */
+    }
 
-/* Foto di dalem frame */
-.photo-block .photo-inner-element,
-.photo-block img {
-    display: block;
-    margin: 0;             /* Reset margin biar ga miring */
-    width: 140px;          /* Ukuran pas foto */
-    max-width: 100%;       /* Amanin biar ga meluber di HP kecil */
-    height: auto;
-}
+    .hero-photo img {
+        width: 100%;         /* Foto dalem ngikutin presisi ukuran frame */
+        height: auto;
+    }
 
     .social-links {
         justify-content: center; /* bikin tombol sosmed rapi di tengah */
