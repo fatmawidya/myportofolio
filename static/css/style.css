@@ -1,3 +1,6 @@
+/* aku nambahin font baru */
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -5,24 +8,28 @@
 }
 
 :root {
-    --ink: #1c1917;
-    --paper: #faf6f0;
-    --accent: #d95d39;
-    --accent-dark: #a8442a;
-    --line: #e3d9c9;
-    --text-muted: #6b6459;
-    --radius: 4px;
+    --ink: #101e34;
+    --paper: #bbd0ff;       
+    --accent: #ffc4d1;      
+    --accent-dark: #6e1e2f;  
+    --accent-green: #67c78e; 
+    --line: #e3d9c9;     
+    --text-muted: #2b2b2b; 
+    --radius: 8px;        
+    --accent-yellow: #fde047;
 }
 
 body {
-    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Quicksand', -apple-system, sans-serif;
     color: var(--ink);
     background-color: var(--paper);
     line-height: 1.6;
+    border-top: 12px solid var(--accent-yellow); /* Top border*/
 }
 
 h1, .brand {
-    font-family: "Space Grotesk", -apple-system, sans-serif;
+    font-family: 'Quicksand', -apple-system, sans-serif;
+    font-weight: 700;
 }
 
 .container {
@@ -32,7 +39,7 @@ h1, .brand {
 }
 
 .site-header {
-    border-bottom: 1px solid var(--line);
+    border-bottom: 2px solid var(--accent-yellow);
 }
 
 .site-header .container {
@@ -49,15 +56,25 @@ h1, .brand {
     text-decoration: none;
 }
 
-.site-header nav {
-    display: flex;
-    gap: 2rem;
-}
+.site-header nav a,
 
-.site-header nav a {
+.site-header nav a:visited {
     color: var(--ink);
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background-color: var(--accent-yellow);
+    padding: 0.4rem 1.2rem;
+    border-radius: 20px;
+    border: 2px solid var(--ink);
+    box-shadow: 2px 2px 0px var(--ink);
+    display: inline-block;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.site-header nav a:hover {
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0px var(--ink);
 }
 
 .hero {
@@ -91,14 +108,31 @@ h1, .brand {
 }
 
 .hero-identity h1 {
-    font-size: clamp(3rem, 7vw, 5rem);
-    line-height: 0.95;
+    font-size: clamp(2.5rem, 5vw, 3.8rem); 
+    font-weight: 900; 
+    line-height: 1.1;
+    color: var(--ink);
+
+    /* biar tulisan tebal */
+    -webkit-text-stroke: 2px var(--ink);
 }
 
 .bio {
-    color: var(--text-muted);
+    /* Kuning transparan (35% opacity) */
+    background-color: rgba(253, 224, 71, 0.35); 
+    
+    /* Efek blur di belakang tulisan  */
+    backdrop-filter: blur(4px); 
+
+    padding: 1.2rem 1.5rem;
+    border-radius: 16px;
+    border: 2.5px solid var(--ink);
+    box-shadow: 4px 4px 0px var(--ink);
     max-width: 480px;
-    margin-bottom: 1.5rem;
+    color: var(--ink);
+    line-height: 1.6;
+
+    margin-bottom: 2.5rem;
 }
 
 .meta-list {
@@ -126,19 +160,41 @@ h1, .brand {
 }
 
 .social-link {
-    display: inline-block;
-    font-size: 0.85rem;
-    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
     text-decoration: none;
-    color: var(--paper);
-    background-color: var(--ink);
-    border-radius: var(--radius);
-    padding: 0.5rem 1.1rem;
-    transition: background-color 0.2s ease;
+    color: var(--ink); /*teksnya diubah jadi gelap biar keliatan di atas pink*/
+
+    /* Background pink pattern polkadot hijau */
+    background-color: var(--accent);
+    background-image: 
+        radial-gradient(var(--accent-green) 15%, transparent 15%), 
+        radial-gradient(var(--accent-green) 15%, transparent 15%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+
+
+    border-radius: 30px;
+    padding: 0.6rem 1.5rem;
+    
+    /* Tambahan border pada tombol */
+    border: 2px solid var(--ink);
+    
+    box-shadow: 3px 3px 0px var(--ink);
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.3s ease;
+}
+
+/* buat ngatur ukuran ikon Font Awesome */
+.social-link i {
+    font-size: 1.1rem;
 }
 
 .social-link:hover {
-    background-color: var(--accent);
+    transform: translateY(-5px) scale(1.05); /* Efek tombol melompat saat di-hover */
+    box-shadow: 6px 6px 0px var(--ink);
 }
 
 .hero-photo {
@@ -153,9 +209,21 @@ h1, .brand {
     left: 1.25rem;
     width: 100%;
     height: 100%;
+
+    /* Warna pink pattern polkadot hijau */
     background-color: var(--accent);
+    background-image: 
+        radial-gradient(var(--accent-green) 15%, transparent 15%), 
+        radial-gradient(var(--accent-green) 15%, transparent 15%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+
+    border: 3px solid var(--ink);
     border-radius: var(--radius);
     z-index: 0;
+
+    /* transisi fotonya */
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .avatar {
@@ -169,11 +237,19 @@ h1, .brand {
     border: 3px solid var(--ink);
 }
 
+/* pas kursor diarahin ke foto, block polkadot geser tepat ke belakang foto */
+.hero-photo:hover .photo-block {
+    top: -20px;
+    left: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+}
+
 .site-footer {
     padding: 1.5rem;
     color: var(--text-muted);
     font-size: 0.85rem;
-    border-top: 1px solid var(--line);
+    border-top: 2px solid var(--accent-yellow);
 }
 
 @media (max-width: 600px) {
