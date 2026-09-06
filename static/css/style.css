@@ -266,9 +266,12 @@ h1, .brand {
             "details";
     }
 
-    .hero-photo {
-        max-width: 220px;
-        margin: 0 auto; /* Biar posisi fotonya pas di tengah layar HP */
+   /* Perkecil foto & perjelas frame polka-dot */
+    .hero-photo,
+    .photo-block {
+        max-width: 180px;       /* Diperkecil dari 220px */
+        padding: 0.8rem;        /* Frame polka-dot dipertipis */
+        margin: 0 auto 1rem;    /* Posisi tengah & ada jarak ke bawah */
     }
 
     .social-links {
