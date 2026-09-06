@@ -268,9 +268,11 @@ h1, .brand {
 
     .hero-photo {
         max-width: 220px;
+        margin: 0 auto; /* Biar posisi fotonya pas di tengah layar HP */
     }
 
     .social-links {
-        justify-content: flex-start;
+        justify-content: center; /* bikin tombol sosmed rapi di tengah */
+        flex-wrap: wrap;         /* mencegah tombol meluber keluar layar */
     }
 }
