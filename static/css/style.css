@@ -40,6 +40,10 @@ h1, h2, h3, .brand, .section-title, .journey-role {
 
 .site-header {
     border-bottom: 2px solid var(--accent-yellow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--paper); /* Biar tulisan di bawahnya gak nembus pas di-scroll */
 }
 
 .site-header .container {
