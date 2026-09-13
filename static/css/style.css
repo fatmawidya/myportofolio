@@ -13,12 +13,13 @@
     --accent: #ffc4d1;      
     --accent-dark: #6e1e2f;  
     --accent-green: #67c78e; 
-    --line: #e3d9c9;     
+    /* --line: #e3d9c9;      =====UDAH GA KEPAKE */
     --text-muted: #2b2b2b; 
     --radius: 3px;        
     --accent-yellow: #fde047;
 }
 
+/* Tampilan umum seluruh halaman */
 body {
     font-family: 'DM Sans', -apple-system, sans-serif;
     color: var(--ink);
@@ -27,17 +28,20 @@ body {
     border-top: 12px solid var(--accent-yellow); /* Top border*/
 }
 
-h1, h2, h3, .brand, .section-title, .journey-role {
+/* Font khusus untuk judul-judul besar */
+h1, h2, h3, .brand, .section-title, .accordion-heading {
     font-family: 'Space Grotesk', -apple-system, sans-serif;
     font-weight: 700;
 }
 
+/* Pembungkus konten di tengah agar tidak meluber ke pinggir layar */
 .container {
     max-width: 960px;
     margin: 0 auto;
     padding: 0 1.5rem;
 }
 
+/* Header / Navbar atas */
 .site-header {
     position: sticky;
     top: 0;
@@ -53,6 +57,7 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     padding: 1.25rem 1.5rem;
 }
 
+/* Teks nama "Fatma Widya Rachma" di navbar kiri atas */
 .brand {
     font-size: 1.3rem;
     font-weight: 700;
@@ -60,8 +65,8 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     text-decoration: none;
 }
 
+/* Tombol kuning (contoh "Profile", "Experience", "Education") di navbar kanan */
 .site-header nav a,
-
 .site-header nav a:visited {
     color: var(--ink);
     text-decoration: none;
@@ -76,15 +81,22 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     transition: transform 0.2s ease;
 }
 
+/* Efek saat tombol "Profile / Experience / Education" di-hover */
 .site-header nav a:hover {
     transform: translateY(-2px);
     box-shadow: none;
 }
 
+/* ==========================================
+   HERO SECTION (HALAMAN PROFILE MAIN)
+   ========================================== */
+
+/* Jarak area profil utama */
 .hero {
     padding: 4.5rem 0 5rem;
 }
 
+/* Pembagi tata letak teks profil (kiri) dan foto (kanan) */
 .hero-grid {
     display: grid;
     grid-template-columns: 1.3fr 1fr;
@@ -94,14 +106,10 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     gap: 1.5rem 3rem;
 }
 
-.hero-identity {
-    grid-area: identity;
-}
+.hero-identity {grid-area: identity;}
+.hero-details {grid-area: details;}
 
-.hero-details {
-    grid-area: details;
-}
-
+/* Teks merah marun "INFORMATION SYSTEMS · UNIVERSITAS INDONESIA" */
 .hero-kicker {
     font-size: 0.85rem;
     letter-spacing: 0.08em;
@@ -111,28 +119,22 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     margin-bottom: 0.75rem;
 }
 
+/* Judul nama besar "Fatma Widya Rachma" yang miring & ada bayangan kuning-pink */
 .hero-identity h1 {
     font-size: clamp(2.5rem, 5vw, 3.8rem); 
     font-weight: 900; 
     line-height: 1.1;
     color: var(--ink);
-
-    /* biar tulisan tebal */
-    -webkit-text-stroke: 2px var(--ink);
-
-    /* aku nambahin efek */
-    display: inline-block;
+    -webkit-text-stroke: 2px var(--ink); /* biar tulisan tebal */
+    display: inline-block; /* aku nambahin efek */
     transform: rotate(-2deg);
     text-shadow: 4px 4px 0px var(--accent-yellow), 8px 8px 0px var(--accent);
 }
 
+/* BIO-nya yang kuning transparan "IS @ Universitas Indonesia, in..." */
 .bio {
-    /* Kuning transparan (35% opacity) */
-    background-color: rgba(253, 224, 71, 0.35); 
-    
-    /* Efek blur di belakang tulisan  */
-    backdrop-filter: blur(4px); 
-
+    background-color: rgba(253, 224, 71, 0.35); /* Kuning transparan (35% opacity) */
+    backdrop-filter: blur(4px); /* Efek blur di belakang tulisan  */
     padding: 1.2rem 1.5rem;
     border-radius: var(--radius);
     border: 2.5px solid var(--ink);
@@ -140,16 +142,17 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     max-width: 480px;
     color: var(--ink);
     line-height: 1.6;
-
     margin-bottom: 2.5rem;
 }
 
+/* Area teks NPM "2506533614" & PROGRAM "S1 Sistem Informasi" */
 .meta-list {
     display: flex;
     gap: 2rem;
     margin-bottom: 1.5rem;
 }
 
+/* Teks judul kecil "NPM" & "PROGRAM" */
 .meta-row dt {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -158,16 +161,19 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     margin-bottom: 0.15rem;
 }
 
+/* Teks isi "2506533614" & "S1 Sistem Informasi" */
 .meta-row dd {
     font-weight: 600;
 }
 
+/* Pembungkus barisan tombol media sosial */
 .social-links {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
 }
 
+/* Tombol polkadot pink ("GitHub", "LinkedIn", "Email", "Instagram") */
 .social-link {
     display: inline-flex;
     align-items: center;
@@ -176,48 +182,44 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     font-weight: 700;
     text-decoration: none;
     color: var(--ink); /*teksnya diubah jadi gelap biar keliatan di atas pink*/
-
-    /* Background pink pattern polkadot hijau */
-    background-color: var(--accent);
+    background-color: var(--accent); /* Background pink pattern polkadot hijau */
     background-image: 
         radial-gradient(var(--accent-green) 15%, transparent 15%), 
         radial-gradient(var(--accent-green) 15%, transparent 15%);
     background-size: 20px 20px;
     background-position: 0 0, 10px 10px;
-
     border-radius: var(--radius);
     padding: 0.6rem 1.5rem;
-    
-    /* Tambahan border pada tombol */
-    border: 2px solid var(--ink);
-    
+    border: 2px solid var(--ink); /* Tambahan border pada tombol */
     box-shadow: none;
     transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-/* buat ngatur ukuran ikon Font Awesome */
+/* Ukuran ikon GitHub/LinkedIn/Email/Instagram di dalam tombol */
 .social-link i {
     font-size: 1.1rem;
 }
 
+/* Efek saat tombol sosmed di-hover (membesar sedikit) */
 .social-link:hover {
     transform: translateY(-5px) scale(1.05); /* Efek tombol melompat saat di-hover */
     box-shadow: none;
 }
 
+/* Pembungkus area foto profil di sebelah kanan */
 .hero-photo {
     grid-area: photo;
     align-self: center;
     position: relative;
 }
 
+/* Bayangan kotak polkadot pink-hijau di belakang foto profil */
 .photo-block {
     position: absolute;
     top: 1.25rem;
     left: 1.25rem;
     width: 100%;
     height: 100%;
-
     /* Warna pink pattern polkadot hijau */
     background-color: var(--accent);
     background-image: 
@@ -225,15 +227,14 @@ h1, h2, h3, .brand, .section-title, .journey-role {
         radial-gradient(var(--accent-green) 15%, transparent 15%);
     background-size: 20px 20px;
     background-position: 0 0, 10px 10px;
-
     border: 3px solid var(--ink);
     border-radius: var(--radius);
     z-index: 0;
-
     /* transisi fotonya */
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
+/* foto profil */
 .avatar {
     position: relative;
     z-index: 1;
@@ -245,7 +246,7 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     border: 3px solid var(--ink);
 }
 
-/* pas kursor diarahin ke foto, block polkadot geser tepat ke belakang foto */
+/* Efek pas foto profil di-hover (kotak polkadot berpindah ke belakang foto) */
 .hero-photo:hover .photo-block {
     top: -20px;
     left: -20px;
@@ -254,13 +255,15 @@ h1, h2, h3, .brand, .section-title, .journey-role {
 }
 
 /* ==========================================
-   SECTION MY JOURNEY
+   REUSABLE ACCORDION SECTION (EXPERIENCE / EDUCATION / ETC)
    ========================================== */
 
-.journey-section {
+/* Area utama komponen accordion */
+.accordion-section {
     padding: 3rem 0 5rem;
 }
 
+/* Judul section (cth: "My Journey") dengan garis bawah tebal */
 .section-title {
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 800;
@@ -276,6 +279,7 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     box-shadow: none;
 }
 
+/* Subtitle deskripsi section ( cth: "A showcase of my experience in...")*/
 .section-subtitle {
     font-size: 1.05rem;
     color: var(--text-muted);
@@ -286,13 +290,15 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     font-weight: 500;
 }
 
-.journey-list {
+/* Container pembungkus daftar accordion (cth: Daftar susunan kartu-kartu pengalaman) */
+.accordion-list {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
 }
 
-.journey-card {
+/* Kartu item accordion (<details>) (misal kartu "Staff of Liaison Officer")*/
+.accordion-card {
     background-color: #ffffff;
     border: 2.5px solid var(--ink);
     border-radius: var(--radius); /* Diubah dari 12px ke 3px */
@@ -301,12 +307,14 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.journey-card:hover {
+/* Efek hover kartu */
+.accordion-card:hover {
     transform: translateY(-2px);
     box-shadow: none;
 }
 
-.journey-header {
+/* Header item accordion (<summary>) (yang bisa diklik)*/
+.accordion-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -318,17 +326,18 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     gap: 1.5rem;
 }
 
-.journey-header::-webkit-details-marker {
+.accordion-header::-webkit-details-marker {
     display: none;
 }
 
-.journey-info {
+.accordion-info {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
 }
 
-.journey-tag {
+/* Teks tag/kategori (misal: PART-TIME / UNIVERSITY / DLL) */
+.accordion-tag {
     font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -339,28 +348,32 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     padding: 0;
 }
 
-.journey-role {
+/* Judul posisi / nama gelar / nama proyek  cth: "Staff of Liaison Officer"*/
+.accordion-role {
     font-size: 1.2rem;
     font-weight: 800;
     color: var(--ink);
     line-height: 1.3;
 }
 
-.journey-right {
+/* Area tanggal & ikon di sebelah kanan */
+.accordion-right {
     display: flex;
     align-items: center;
     gap: 1rem;
     flex-shrink: 0;
 }
 
-.journey-date {
+/* Teks tanggal "2026 – Present" */
+.accordion-date {
     font-size: 0.9rem;
     font-weight: 700;
     color: var(--text-muted);
     white-space: nowrap;
 }
 
-.journey-icon {
+/* Pembungkus ikon panah ( chevron ) */
+.accordion-icon {
     font-size: 0.95rem;
     color: var(--ink);
     display: flex;
@@ -370,37 +383,41 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     height: 28px;
 }
 
-.journey-icon i {
+.accordion-icon i {
     transition: transform 0.3s ease;
 }
 
-.journey-card[open] .journey-icon i {
+/* Rotasi panah saat item terbuka */
+.accordion-card[open] .accordion-icon i {
     transform: rotate(180deg);
 }
 
-.journey-content {
+/* Area dalam accordion yang terbuka (tempat bullet points) */
+.accordion-content {
     padding: 0 1.5rem 1.5rem 1.5rem;
     border-top: 1.5px solid var(--ink);
     background-color: #ffffff;
 }
 
-.journey-highlights {
+/* Daftar bullet point di dalam accordion */
+.accordion-highlights {
     margin-top: 1.25rem;
     padding-left: 1.25rem;
 }
 
-.journey-highlights li {
+/* Isi teks bullet point (isi desc nya) */
+.accordion-highlights li {
     margin-bottom: 0.75rem;
     font-size: 0.95rem;
     color: var(--ink);
     line-height: 1.6;
 }
 
-.journey-highlights li:last-child {
+.accordion-highlights li:last-child {
     margin-bottom: 0;
 }
 
-.journey-highlights strong {
+.accordion-highlights strong {
     font-weight: 700;
     color: var(--ink);
     background: transparent;
@@ -408,6 +425,7 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     padding: 0;
 }
 
+/* Teks copyright footer di paling bawah halaman */
 .site-footer {
     padding: 1.5rem;
     color: var(--text-muted);
@@ -415,7 +433,11 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     border-top: 2px solid var(--accent-yellow);
 }
 
+/* ==========================================
+   PENYESUAIAN TAMPILAN HANDPHONE (RESPONSIVE)
+   ========================================== */
 @media (max-width: 600px) {
+    /* Mengubah tata letak profil jadi 1 kolom memanjang ke bawah */
     .hero-grid {
         grid-template-columns: 1fr;
         grid-template-areas:
@@ -424,23 +446,26 @@ h1, h2, h3, .brand, .section-title, .journey-role {
             "details";
     }
 
+    /* Ukuran bingkai foto diperkecil di HP */
    .hero-photo {
         max-width: 190px;    /* Ukuran frame luar diperkecil */
         padding: 8px;        /* Frame/border polka-dot dipertipis */
         margin: 1rem auto 1.5rem; /* Dikasih jarak biar ga nabrak nama */
     }
 
-    .hero-photo img {
+    /* Foto profil menyesuaikan bingkai kecil HP */
+    .hero-photo .avatar {
         width: 100%;         /* Foto dalem ngikutin presisi ukuran frame */
         height: auto;
     }
 
+    /* Tombol sosmed ditata di tengah di layar HP */
     .social-links {
         justify-content: center; /* bikin tombol sosmed rapi di tengah */
         flex-wrap: wrap;         /* mencegah tombol meluber keluar layar */
     }
 
-    .journey-section {
+    .accordion-section {
         padding: 2rem 1.25rem 3rem 1.25rem;
     }
 
@@ -454,7 +479,7 @@ h1, h2, h3, .brand, .section-title, .journey-role {
         margin-bottom: 1.5rem;
     }
 
-    .journey-header {
+    .accordion-header {
         position: static;
         display: flex;
         justify-content: space-between;
@@ -463,22 +488,22 @@ h1, h2, h3, .brand, .section-title, .journey-role {
         gap: 0.75rem;
     }
 
-    .journey-info {
+    .accordion-info {
         width: auto;
         padding-right: 0;
         flex: 1;
     }
 
-    .journey-tag {
+    .accordion-tag {
         font-size: 0.68rem;
     }
 
-    .journey-role {
+    .accordion-heading {
         font-size: 0.95rem;
         line-height: 1.3;
     }
 
-    .journey-right {
+    .accordion-right {
         position: static;
         width: auto;
         display: flex;
@@ -488,33 +513,34 @@ h1, h2, h3, .brand, .section-title, .journey-role {
         flex-shrink: 0;
     }
 
-    .journey-date {
+    .accordion-date {
         font-size: 0.72rem;
     }
 
-    .journey-icon {
+    .accordion-icon {
         position: static;
         font-size: 0.8rem;
         width: auto;
         height: auto;
     }
 
-    .journey-content {
+    .accordion-content {
         padding: 0 1rem 1rem 1rem;
     }
 
-    .journey-highlights {
+    .accordion-highlights {
         margin-top: 0.75rem;
         padding-left: 1rem;
     }
 
-    .journey-highlights li {
+    .accordion-highlights li {
         font-size: 0.82rem;
         margin-bottom: 0.5rem;
     }
 }
 
-.experience-section {
+/* ---- GAPAKE TEMPLATE DARI TUTOR 2 */
+/* .experience-section {
     padding: 4rem 0;
     border-top: 1px solid var(--line);
 }
@@ -566,4 +592,4 @@ h1, h2, h3, .brand, .section-title, .journey-role {
     margin-top: 1rem;
     font-size: 0.85rem;
     font-weight: 600;
-}
+} */
