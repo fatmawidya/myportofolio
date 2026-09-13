@@ -55,3 +55,46 @@ Berikut adalah 5 contoh interaksi saya bersama AI selama proses pengerjaan:
    * Tujuan: Merapikan kalimat pada jawaban refleksi di README agar memenuhi standar pengumpulan tugas tanpa menghilangkan poin utama yang ingin saya sampaikan.
    * Respon AI: Merapikan struktur paragraf dan memperbaiki susunan kata agar kalimat refleksi menjadi lebih jelas dan sistematis.
    * Tindakan Saya: Saya membaca ulang hasilnya, menghapus bagian kalimat yang terasa terlalu rumit atau teoritis, dan menyesuaikannya kembali agar benar-benar mencerminkan pengalaman yang saya alami saat koding.
+
+
+### Tugas 2
+
+1. Alur pemrosesan pada arsitektur Model-View-Template (MVT) Django dimulai ketika pengguna memasukkan URL pada browser, yang memicu pengiriman HTTP Request ke server. Django menerima permintaan tersebut dan melakukan pencocokan pola URL melalui portofolio/urls.py yang diteruskan ke main/urls.py menggunakan fungsi include(). Setelah rute terdeteksi, Django memanggil fungsi view yang sesuai pada main/views.py, seperti show_experience atau show_education. Selanjutnya, jika halaman memerlukan data dari basis data, view meminta data tersebut ke main/models.py (misalnya melalui kueri Experience.objects.all()), lalu model mengeksekusi kueri ke basis data SQLite dan mengembalikan data dalam bentuk QuerySet. View kemudian menyusun data ke dalam dictionary konteks dan memanggil template HTML terkait (experience.html atau educational.html) agar Django Template Engine dapat menggabungkan data dinamis dengan variabel dan tag template. Akhirnya, Django mengembalikan halaman HTML yang telah dirender sepenuhnya sebagai HTTP Response berstatus kode 200 OK ke browser pengguna untuk ditampilkan.
+
+2. Unit test sangat penting dalam pengembangan aplikasi web dengan Django karena berperan sebagai jaring pengaman otomatis yang memastikan setiap fungsi, pemetaan URL, logika model, dan tampilan berjalan sesuai ekspektasi tanpa perlu pengujian manual secara berulang di browser setiap kali terjadi perubahan kode. Namun, pengujian dengan test coverage 100% tidak menjamin bahwa kode yang dibuat sepenuhnya bebas dari bug atau error. Hal ini disebabkan karena test coverage hanya mengukur persentase baris kode yang pernah dieksekusi oleh penguji selama proses pengujian berjalan. Angka 100% tidak menjamin kualitas atau kedalaman dari skenario pengujian itu sendiri, sehingga unit test masih bisa melewatkan edge cases (kasus ekstrem), kesalahan logika bisnis, masalah validasi input pengguna yang tak terduga, celah keamanan, maupun kendala integrasi antarkomponen saat aplikasi dijalankan pada lingkungan production.
+
+3. Langkah-langkah implementasi Tugas 2 yang saya lakukan diawali dengan mendefinisikan model Experience dan Education pada berkas main/models.py yang dilengkapi atribut seperti title, description, category, thumbnail, started_at, ended_at, institution, degree, field_of_study, dan start_year, serta method __str__ dan property kondisi is_ongoing maupun is_current. Setelah skema model siap, saya melakukan migrasi dengan menjalankan perintah python manage.py makemigrations untuk mencatat skema tabel baru dan python manage.py migrate untuk menerapkan struktur tersebut ke dalam basis data SQLite lokal. Langkah berikutnya adalah menyusun views dan URL dengan menambahkan fungsi show_experience dan show_education di main/views.py untuk mengambil data model, lalu mengatur rute navigasinya pada main/urls.py menggunakan namespace app_name = "main" dan menghubungkannya ke portofolio/urls.py melalui include("main.urls"). Kemudian, saya memperbarui template HTML pada experience.html dan educational.html menggunakan Django Template Language seperti {{ ... }} untuk menampilkan variabel, {% for %} untuk perulangan kartu, {% if %} untuk percabangan status, serta tag {% empty %} untuk menampilkan pesan kondisi kosong saat data belum ada. Terakhir, saya menyusun unit test pada main/tests.py dengan kelas TestCase dan fungsi reverse() untuk menguji rute URL, ketepatan template, kemunculan data model di HTML, serta penanganan empty state, lalu mengukur ketercakupan pengujian menggunakan perintah coverage. Dalam prosesnya, saya menghadapi kendala teknis berupa kesulitan saat penataan layout CSS untuk elemen thumbnail gambar dan struktur kartu agar tetap simetris serta tidak merusak rasio gambar (distorted/stretched), yang saya atasi dengan menerapkan aturan CSS object-fit: cover serta memanfaatkan layout CSS Grid. Kendala kedua adalah tampilan halaman yang berantakan ketika thumbnail tidak diisi atau bernilai kosong, yang saya selesaikan dengan menambahkan percabangan kondisional {% if experience.thumbnail %} pada template HTML agar elemen gambar hanya dirender ketika URL gambar tersedia.
+
+### Pengungkapan AI (AI Disclosure)
+
+Dalam pengerjaan Tugas Individu 2 ini, saya memanfaatkan AI (Gemini) teman belajar interaktif saya. Setiap kali menghadapi kendala teknis, kebingungan sintaks unit test, atau mencari solusi tata letak layout, AI membantu saya memahami konsep dasar di balik permasalahan tersebut.
+
+Saya tidak pernah langsung menyalin dan menempelkan (copy-paste) kode yang diberikan oleh AI ke dalam proyek saya begitu saja. Setiap saran atau snippet kode yang diberikan selalu saya pelajari terlebih dahulu alur logikanya, saya uji coba secara bertahap di lingkungan lokal, dan saya sesuaikan secara manual agar pas dengan kebutuhan proyek. Banyak rekomendasi pengujian maupun tampilan dari AI yang perlu saya ubah agar benar-benar mencerminkan kondisi empty state, fungsionalitas variabel di template, maupun struktur Django yang saya gunakan.
+
+Selain membantu dalam penulisan test case dan pemecahan masalah layout CSS, AI juga saya gunakan sebagai alat bantu untuk merapikan tata bahasa pada jawaban refleksi di README ini. Poin-poin refleksi yang tertulis murni berasal dari pengalaman dan pemahaman nyata yang saya alami selama proses koding, lalu saya meminta bantuan AI untuk merangkai kalimatnya agar lebih runtut dan enak dibaca. Hasil dari perbaikan tata bahasa tersebut tetap saya baca ulang dan saya sesuaikan kembali agar bahasanya tetap natural dan mencerminkan sudut pandang saya sebagai mahasiswa.
+
+Berikut adalah 4 contoh interaksi saya bersama AI selama proses pengerjaan:
+
+1. Solusi Layout Gambar Thumbnail pada Kartu Tampilan
+* Prompt: "Gimana cara ngatur CSS biar gambar thumbnail di kartu experience ukurannya pas dan ga ketarik/gepeng?"
+* Tujuan: Mencari solusi penataan tata letak (layout) gambar agar rasio gambar thumbnail tetap simetris pada kartu tampilan.
+* Respon AI: Menjelaskan penggunaan atribut CSS object-fit: cover dan pembatasan batas tinggi (max-height) pada elemen gambar.
+* Tindakan Saya: Saya menerapkan kelas CSS baru untuk thumbnail dengan aturan object-fit: cover dan penataan CSS Grid pada static/css/style.css.
+
+2. Conditional Rendering untuk Thumbnail Kosong pada Template
+* Prompt: "Tampilan kartu jadi jelek pas thumbnail-nya ga diisi URL, gimana cara ngakalin di template HTML Django?"
+* Tujuan: Mencegah munculnya elemen gambar yang rusak (broken image) ketika data thumbnail bernilai None atau kosong.
+* Respon AI: Memberikan contoh percabangan kondisional {% if experience.thumbnail %} pada Django Template Engine.
+* Tindakan Saya: Saya membungkus tag  pada experience.html dengan blok {% if %} agar elemen gambar hanya ditampilkan ketika URL thumbnail tersedia.
+
+3. Pengujian Method Model dan Atribut Dinamis
+* Prompt: "Gimana cara ngetest status is_ongoing di model Experience kalo ended_at diisi?"
+* Tujuan: Menguji apakah logika property is_ongoing pada model dapat merespons perubahan atribut ended_at dengan benar.
+* Respon AI: Memberikan contoh pengujian dengan mengubah self.experience.ended_at = timezone.now().date(), menyimpan objek (save()), dan memeriksa klausa self.assertFalse(self.experience.is_ongoing).
+* Tindakan Saya: Saya menerapkan metode test_completed_experience tersebut ke dalam main/tests.py untuk memastikan status berubah menjadi tidak aktif ketika tanggal selesai diisi.
+
+4. Perbaikan Tata Bahasa Jawaban Refleksi
+* Prompt: "Tolong benerin tata bahasa refleksi tugas PBP aku dong biar ga kaku dan kalimatnya runtut"
+* Tujuan: Merapikan kalimat pada jawaban refleksi di README agar memenuhi standar pengumpulan tugas tanpa menghilangkan poin utama yang ingin saya sampaikan.
+* Respon AI: Merapikan struktur paragraf dan memperbaiki susunan kata agar kalimat refleksi menjadi lebih jelas dan sistematis.
+* Tindakan Saya: Saya membaca ulang hasilnya, menghapus bagian kalimat yang terasa terlalu rumit atau teoritis, dan menyesuaikannya kembali agar benar-benar mencerminkan pengalaman yang saya alami saat koding.
