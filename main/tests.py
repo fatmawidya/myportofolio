@@ -10,6 +10,7 @@ class MainTest(TestCase):
             title="Open House Fasilkom UI 2024",
             description="Staff of Public Relations and Event Host.",
             category="volunteer", 
+            started_at=timezone.now().date()
         )
         # Data dummy Education 
         self.education = Education.objects.create(
