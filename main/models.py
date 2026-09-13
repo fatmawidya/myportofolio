@@ -45,6 +45,7 @@ class Education(models.Model):
     field_of_study = models.CharField(max_length=255)  # Kolom jurusan / bidang studi 
     start_year = models.IntegerField()  # Kolom tahun masuk (tipe data angka bulat)
     end_year = models.IntegerField(blank=True, null=True)
+    thumbnail = models.URLField(blank=True, null=True)
 
     def __str__(self):  
         return f"{self.institution} - {self.field_of_study}"  # nampilin format "Nama Sekolah/Kampus - Jurusan"

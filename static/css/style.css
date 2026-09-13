@@ -66,6 +66,12 @@ h1, h2, h3, .brand, .section-title, .accordion-heading {
 }
 
 /* Tombol kuning (contoh "Profile", "Experience", "Education") di navbar kanan */
+/* agar tombol Profile, Experience, Education sejajar */
+.site-header nav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
 .site-header nav a,
 .site-header nav a:visited {
     color: var(--ink);
@@ -314,7 +320,7 @@ h1, h2, h3, .brand, .section-title, .accordion-heading {
 }
 
 /* Header item accordion (<summary>) (yang bisa diklik)*/
-.accordion-header {
+summary.accordion-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -326,7 +332,11 @@ h1, h2, h3, .brand, .section-title, .accordion-heading {
     gap: 1.5rem;
 }
 
-.accordion-header::-webkit-details-marker {
+summary.accordion-header::-webkit-details-marker{
+    display: none;
+}
+
+summary.accordion-header::marker {
     display: none;
 }
 
@@ -425,6 +435,18 @@ h1, h2, h3, .brand, .section-title, .accordion-heading {
     padding: 0;
 }
 
+/* Styling Gambar Thumbnail (Desktop) */
+.accordion-thumb {
+    width: 100%;
+    max-height: 260px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2.5px solid #0f172a;
+    margin-bottom: 16px;
+    display: block;
+}
+
+
 /* Teks copyright footer di paling bawah halaman */
 .site-footer {
     padding: 1.5rem;
@@ -479,7 +501,7 @@ h1, h2, h3, .brand, .section-title, .accordion-heading {
         margin-bottom: 1.5rem;
     }
 
-    .accordion-header {
+    summary.accordion-header {
         position: static;
         display: flex;
         justify-content: space-between;
@@ -498,7 +520,7 @@ h1, h2, h3, .brand, .section-title, .accordion-heading {
         font-size: 0.68rem;
     }
 
-    .accordion-heading {
+    .accordion-role {
         font-size: 0.95rem;
         line-height: 1.3;
     }
@@ -526,6 +548,12 @@ h1, h2, h3, .brand, .section-title, .accordion-heading {
 
     .accordion-content {
         padding: 0 1rem 1rem 1rem;
+    }
+
+    .accordion-thumb {
+        max-height: 170px; /* Agar tinggi gambar tidak terlalu makan tempat di layar HP */
+        margin-bottom: 10px;
+        border-width: 2px;  /* Border sedikit dipertipis untuk layar kecil */
     }
 
     .accordion-highlights {

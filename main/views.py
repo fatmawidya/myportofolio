@@ -24,4 +24,4 @@ def show_education(request):
         "name": "Fatma Widya Rachma", # Nama untuk header/footer
         "education_list": Education.objects.all(), # Ambil seluruh data dari tabel Education
         }
-    return render(request, "education.html", context)  # Kirim data ke template education.html baru
+    return render(request, "educational.html", context)  # Kirim data ke template education.html baru
