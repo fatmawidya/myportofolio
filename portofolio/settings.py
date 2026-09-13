@@ -19,6 +19,11 @@ load_dotenv()
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "fatma-widya-myportofolio.pws.cs.ui.ac.id"]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.pws.cs.ui.ac.id",
+    "https://fatma-widya-myportofolio.pws.cs.ui.ac.id",
+]
+
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
