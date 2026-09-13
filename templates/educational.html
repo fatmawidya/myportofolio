@@ -29,16 +29,21 @@
         <section class="accordion-section container" id="education">
             <h1 class="section-title">My Education</h1>
             <p class="section-subtitle">
-                An overview of my academic background, formal education, and continuous learning journey in Information Systems.
+                A glimpse into my educational journey, from my early school days to studying Information Systems at Universitas Indonesia.
             </p>
 
             <div class="accordion-list">
                 {% for edu in education_list %}
                     <details class="accordion-card" name="education">
                         <summary class="accordion-header">
-                            <div class="accordion-info">
-                                <span class="accordion-tag">{{ edu.degree }}</span>
-                                <h3 class="accordion-role">{{ edu.institution }}</h3>
+                            <div class="accordion-left">
+                                {% if edu.thumbnail %}
+                                    <img src="{{ edu.thumbnail }}" alt="{{ edu.title }}" class="accordion-thumb-small">
+                                {% endif %}
+                                <div class="accordion-info">
+                                    <span class="accordion-tag">{{ edu.get_degree_display }}</span>
+                                    <h3 class="accordion-role">{{ edu.institution }}</h3>
+                                </div>
                             </div>
                             <div class="accordion-right">
                                 <span class="accordion-date">
@@ -50,15 +55,13 @@
                             </div>
                         </summary>
                         <div class="accordion-content">
-                            {% if edu.thumbnail %}
-                                <img src="{{ edu.thumbnail }}" alt="{{ edu.institution }}" class="accordion-thumb">
+                            {% if edu.field_of_study %}
+                                <p class="accordion-major"><strong>Field of Study:</strong> {{ edu.field_of_study }}</p>
                             {% endif %}
-                            <ul class="accordion-highlights">
-                                <li>{{ edu.major }}</li>
-                                {% if edu.description %}
-                                    <li>{{ edu.description }}</li>
-                                {% endif %}
-                            </ul>
+
+                            {% if edu.description %}
+                                <p class="accordion-description" style="white-space: pre-line;">{{ edu.description }}</p>
+                            {% endif %}
                         </div>
                     </details>
                 {% empty %}

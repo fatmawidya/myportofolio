@@ -402,13 +402,6 @@ summary.accordion-header::marker {
     transform: rotate(180deg);
 }
 
-/* Area dalam accordion yang terbuka (tempat bullet points) */
-.accordion-content {
-    padding: 0 1.5rem 1.5rem 1.5rem;
-    border-top: 1.5px solid var(--ink);
-    background-color: #ffffff;
-}
-
 /* Daftar bullet point di dalam accordion */
 .accordion-highlights {
     margin-top: 1.25rem;
@@ -446,6 +439,22 @@ summary.accordion-header::marker {
     display: block;
 }
 
+.accordion-thumb-small {
+        width: 60px;
+        height: 60px;
+        object-fit: contain; 
+        border-radius: var(--radius);
+        border: 2px solid var(--ink);
+        background-color: #ffffff; 
+        flex-shrink: 0;
+    }
+
+    /* Pembungkus agar gambar dan teks posisi di header sejajar secara horizontal */
+    .accordion-left {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+    }
 
 /* Teks copyright footer di paling bawah halaman */
 .site-footer {
@@ -454,6 +463,19 @@ summary.accordion-header::marker {
     font-size: 0.85rem;
     border-top: 2px solid var(--accent-yellow);
 }
+
+ .accordion-content {
+        padding: 1.25rem 1.5rem 1.5rem 1.5rem; /* Tambah padding atas dari 0 ke 1.25rem */
+        border-top: 1.5px solid var(--ink);
+        background-color: #ffffff;
+    }
+
+.accordion-description {
+        font-size: 0.95rem;
+        color: var(--ink);
+        line-height: 1.7; 
+        margin-top: 0.5rem;
+    }
 
 /* ==========================================
    PENYESUAIAN TAMPILAN HANDPHONE (RESPONSIVE)
@@ -546,14 +568,8 @@ summary.accordion-header::marker {
         height: auto;
     }
 
-    .accordion-content {
-        padding: 0 1rem 1rem 1rem;
-    }
-
-    .accordion-thumb {
-        max-height: 170px; /* Agar tinggi gambar tidak terlalu makan tempat di layar HP */
-        margin-bottom: 10px;
-        border-width: 2px;  /* Border sedikit dipertipis untuk layar kecil */
+    .accordion-left {
+        gap: 0.85rem;
     }
 
     .accordion-highlights {
@@ -566,58 +582,3 @@ summary.accordion-header::marker {
         margin-bottom: 0.5rem;
     }
 }
-
-/* ---- GAPAKE TEMPLATE DARI TUTOR 2 */
-/* .experience-section {
-    padding: 4rem 0;
-    border-top: 1px solid var(--line);
-}
-
-.section-kicker {
-    color: var(--accent-dark);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.experience-section h1 {
-    margin: 0.4rem 0 1.5rem;
-    font-size: 2rem;
-}
-
-.experience-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
-}
-
-.experience-card {
-    padding: 1.25rem;
-    background-color: #fff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-}
-
-.experience-category {
-    color: var(--accent-dark);
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.experience-card h2 {
-    margin: 0.5rem 0;
-    font-size: 1.25rem;
-}
-
-.experience-description,
-.empty-state {
-    color: var(--text-muted);
-}
-
-.experience-status {
-    margin-top: 1rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-} */

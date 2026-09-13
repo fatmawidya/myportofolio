@@ -17,7 +17,7 @@ class Experience(models.Model): # Buat tabel 'Experience' di database
     description = models.TextField() #deskripsi (panjang)
     category = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, default='full-time') # Kolom pilihan jenis pengalaman
     thumbnail = models.URLField(blank=True, null=True) # Kolom link gambar, boleh kosong di form maupun database
-    started_at = models.DateTimeField(auto_now_add=True) # Tanggal dimulai, otomatis terisi waktu saat data masuk
+    started_at = models.DateTimeField() # Tanggal dimulai
     ended_at = models.DateTimeField(blank=True, null=True) # Tanggal selesai, boleh kosong kalau masih berjalan
 
     def __str__(self): # Fungsi bawaan Python buat ngatur representasi teks dari objek
@@ -46,6 +46,7 @@ class Education(models.Model):
     start_year = models.IntegerField()  # Kolom tahun masuk (tipe data angka bulat)
     end_year = models.IntegerField(blank=True, null=True)
     thumbnail = models.URLField(blank=True, null=True)
+    description = models.TextField() #deskripsi (panjang)
 
     def __str__(self):  
         return f"{self.institution} - {self.field_of_study}"  # nampilin format "Nama Sekolah/Kampus - Jurusan"

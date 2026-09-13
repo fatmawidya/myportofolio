@@ -37,9 +37,14 @@
                 {% for exp in experience_list %}
                     <details class="accordion-card" name="journey">
                         <summary class="accordion-header">
-                            <div class="accordion-info">
-                                <span class="accordion-tag">{{ exp.get_category_display }}</span>
-                                <h3 class="accordion-role">{{ exp.title }}</h3>
+                            <div class="accordion-left">
+                                {% if exp.thumbnail %}
+                                    <img src="{{ exp.thumbnail }}" alt="{{ exp.title }}" class="accordion-thumb-small">
+                                {% endif %}
+                                <div class="accordion-info">
+                                    <span class="accordion-tag">{{ exp.get_category_display }}</span>
+                                    <h3 class="accordion-role">{{ exp.title }}</h3>
+                                </div>
                             </div>
                             <div class="accordion-right">
                                 <span class="accordion-date">
@@ -55,12 +60,9 @@
                             </div>
                         </summary>
                         <div class="accordion-content">
-                            {% if exp.thumbnail %}
-                                <img src="{{ exp.thumbnail }}" alt="{{ exp.title }}" class="accordion-thumb">
-                            {% endif %}
-                            <ul class="accordion-highlights">
-                                <li>{{ exp.description }}</li>
-                            </ul>
+                            <div class="accordion-description">
+                                {{ exp.description|linebreaks }}
+                            </div>
                         </div>
                     </details>
                 {% empty %}
