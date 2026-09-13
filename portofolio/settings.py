@@ -155,11 +155,3 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
-
-# Otomatis buat superuser PWS saat deployment
-from django.contrib.auth.models import User
-try:
-    if not User.objects.filter(username="fatmawidya").exists():
-        User.objects.create_superuser("fatmawidya", "fatma.widya@ui.ac.id", "Ftmwdy30")
-except Exception:
-    pass
