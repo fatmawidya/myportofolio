@@ -10,15 +10,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2.0"> <!-- 2. {% static 'css/style.css' %} dipanggil untuk menghubungkan file CSS dari folder static. 
-         Tambahan '?v=2.0' (Cache Busting) berfungsi memaksa browser mengunduh file CSS yang baru diubah 
-         dan mengabaikan versi CSS lama yang tersimpan di memori cache browser. -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3.0"> 
 </head>
 <body>
     <header class="site-header">
         <div class="container">
             <a href="{% url 'main:show_main' %}" class="brand">{{ name }}</a>
-            <nav>
+           <button class="hamburger" id="hamburger-btn" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav id="nav-menu">
                 <a href="{% url 'main:show_main' %}">Profile</a>
                 <a href="{% url 'main:show_education' %}">Education</a>
                 <a href="{% url 'main:show_experience' %}">Experience</a>
@@ -79,5 +82,15 @@
             <p>&copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
         </div>
     </footer>
+
+    <script>
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const navMenu = document.getElementById('nav-menu');
+
+        hamburgerBtn.addEventListener('click', () => {
+            hamburgerBtn.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
