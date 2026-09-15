@@ -2,49 +2,54 @@
     {% block content %}
     <main>
         <section class="accordion-section container" id="education">
-            <h1 class="section-title">My Education</h1>
+            <h1 class="section-title">EDUCATION</h1>
             <p class="section-subtitle">
-                A glimpse into my educational journey, from my early school days to studying Information Systems at Universitas Indonesia.
+                From early school days to studying Information Systems at UI.
             </p>
 
-            <div class="accordion-list">
+            <div class="timeline-container">
                 {% for edu in education_list %}
-                    <details class="accordion-card" name="education">
-                        <summary class="accordion-header">
-                            <div class="accordion-left">
-                                {% if edu.thumbnail %}
-                                    <img src="{{ edu.thumbnail }}" alt="{{ edu.title }}" class="accordion-thumb-small">
-                                {% endif %}
-                                <div class="accordion-info">
-                                    <span class="accordion-tag">{{ edu.get_degree_display }}</span>
-                                    <h3 class="accordion-role">{{ edu.institution }}</h3>
-                                </div>
-                            </div>
-                            <div class="accordion-right">
-                                <span class="accordion-date">
-                                    {{ edu.start_year }} &ndash; {% if edu.end_year %}{{ edu.end_year }}{% else %}Present{% endif %}
-                                </span>
-                                <div class="accordion-icon">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </div>
-                            </div>
-                        </summary>
-                        <div class="accordion-content">
-                            {% if edu.field_of_study %}
-                                <p class="accordion-major"><strong>Field of Study:</strong> {{ edu.field_of_study }}</p>
-                            {% endif %}
-
-                            {% if edu.description %}
-                                <p class="accordion-description" style="white-space: pre-line;">{{ edu.description }}</p>
+                    <div class="timeline-item {% if forloop.counter0|divisibleby:2 %}left{% else %}right{% endif %}">
+                    
+                    <div class="timeline-card" onclick="toggleGlow(this)">
+                        <div class="timeline-logo">
+                            {% if edu.thumbnail %}
+                                <img src="{{ edu.thumbnail }}" alt="{{ edu.institution }}">
+                            {% else %}
+                                <span>{{ edu.institution|slice:":1" }}</span>
                             {% endif %}
                         </div>
-                    </details>
-                {% empty %}
-                    <p class="empty-state">
-                        No education has been added yet.
-                    </p>
-                {% endfor %}
-            </div>
-        </section>
-    </main>
+
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">{{ edu.institution }}</h3>
+                            <p class="timeline-subtitle">
+                                {{ edu.get_degree_display }}{% if edu.field_of_study %} &bull; {{ edu.field_of_study }}{% endif %}
+                            </p>
+                            <p class="timeline-date">
+                                {{ edu.start_year }} &ndash; {% if edu.end_year %}{{ edu.end_year }}{% else %}Present{% endif %}
+                            </p>
+                            {% if edu.description %}
+                                <p class="timeline-desc" style="white-space: pre-line;">{{ edu.description }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            {% empty %}
+                <p class="empty-state">
+                    No education has been added yet.
+                </p>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+
+<script>
+    function toggleGlow(card) {
+        document.querySelectorAll('.timeline-card').forEach(c => {
+            if (c !== card) c.classList.remove('active');
+        });
+        card.classList.toggle('active');
+    }
+</script>
     {% endblock content %}

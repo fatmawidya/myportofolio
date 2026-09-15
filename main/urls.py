@@ -1,6 +1,6 @@
 from django.urls import path
 
-from main.views import show_education, show_main, show_experience, create_experience, get_experience_json, get_experience_xml, delete_experience
+from main.views import show_education, show_main, show_experience, create_experience, get_experience_json, get_experience_xml, delete_experience, edit_experience
 
 app_name = "main"
 
@@ -16,4 +16,7 @@ urlpatterns = [
 
     # Delete Endpoint
     path('experience/<uuid:id>/delete/', delete_experience, name='delete_experience'),
+
+    # edit
+    path('experience/<uuid:id>/edit/', edit_experience, name='edit_experience'),
 ]

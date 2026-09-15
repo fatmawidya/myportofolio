@@ -76,3 +76,22 @@ def delete_experience(request, id):
         messages.success(request, "Experience deleted successfully!")
         return redirect("main:show_experience")
     return redirect("main:show_experience")
+
+def edit_experience(request, id):
+    # Ambil data pengalaman berdasarkan ID
+    experience = get_object_or_404(Experience, pk=id)
+    
+    # Masukkan instance pengalaman ke dalam form
+    form = ExperienceForm(request.POST or None, instance=experience)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Experience successfully updated!")
+        return redirect('main:show_experience')
+
+    context = {
+        'form': form,
+        'name': 'Fatma Widya Rachma', 
+        'experience': experience, 
+    }
+    return render(request, "edit_experience.html", context)
