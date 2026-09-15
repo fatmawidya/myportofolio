@@ -19,8 +19,7 @@ def show_main(request): #view untuk profil
 # View Utama Experience (Mengambil data langsung dari database + Fitur Search)
 def show_experience(request):
     search_query = request.GET.get("search", "").strip()
-    experiences = Experience.objects.all().order_by('-id')
-    
+    experiences = Experience.objects.all().order_by('-started_at')
     if search_query:
         experiences = experiences.filter(title__icontains=search_query)
 
