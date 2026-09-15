@@ -54,7 +54,7 @@ def create_experience(request):
 # API Endpoint untuk JSON
 def get_experience_json(request):
     search_query = request.GET.get("search", "").strip()
-    experiences = Experience.objects.all()
+    experiences = Experience.objects.all().order_by('-started_at')
     
     if search_query:
         experiences = experiences.filter(title__icontains=search_query)
