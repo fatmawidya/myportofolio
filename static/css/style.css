@@ -414,7 +414,7 @@ summary.accordion-header::marker { display: none; }
     width: 60px;
     height: 60px;
     object-fit: contain; 
-    border-radius: var(--radius);
+    border-radius: 50%;
     border: 2px solid var(--ink);
     background-color: #ffffff; 
     flex-shrink: 0;
@@ -715,7 +715,6 @@ summary.accordion-header::marker { display: none; }
    EDUCATION TIMELINE SECTION (ZIG-ZAG)
    ========================================== */
 
-/* timeline education */
 .timeline-container {
     position: relative;
     max-width: 900px;
@@ -723,7 +722,15 @@ summary.accordion-header::marker { display: none; }
     padding: 2rem 0;
 }
 
+/* Clearfix agar container tidak collapse */
 .timeline-container::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+/* Garis hitam vertikal di tengah */
+.timeline-container::before {
     content: '';
     position: absolute;
     width: 4px;
@@ -735,31 +742,40 @@ summary.accordion-header::marker { display: none; }
 }
 
 .timeline-item {
-    padding: 10px 40px;
+    padding: 10px 30px;
     position: relative;
-    background-color: inherit;
     width: 50%;
+    margin-bottom: 2rem;
 }
 
+/* Kartu Kiri */
 .timeline-item.left {
-    left: 0;
+    float: left;
+    clear: left;
 }
 
+/* Kartu Kanan (dinaikkan sejajar & diberi sedikit offset zig-zag) */
 .timeline-item.right {
-    left: 50%;
+    float: right;
+    clear: right;
+    margin-top: 3rem; /* Ubah angka ini kalau mau posisi kartu kanan lebih naik/turun */
 }
 
+/* Titik bulat di garis tengah */
 .timeline-item::after {
     content: '';
     position: absolute;
     width: 20px;
     height: 20px;
-    right: -10px;
     background-color: var(--accent-yellow);
     border: 3px solid var(--ink);
     top: 24px;
     border-radius: 50%;
     z-index: 10;
+}
+
+.timeline-item.left::after {
+    right: -10px;
 }
 
 .timeline-item.right::after {
@@ -784,7 +800,6 @@ summary.accordion-header::marker { display: none; }
     box-shadow: 5px 5px 0px var(--ink);
 }
 
-/* efek bercahaya pas diklik */
 .timeline-card.active {
     box-shadow: 0 0 20px rgba(253, 224, 71, 0.9), 4px 4px 0px var(--ink) !important;
     border-color: var(--ink) !important;
@@ -1053,7 +1068,7 @@ summary.accordion-header::marker { display: none; }
         padding: 0.6rem 0;
     }
 
-    .timeline-container::after {
+    .timeline-container::before {
         left: 18px;
     }
 
@@ -1061,11 +1076,13 @@ summary.accordion-header::marker { display: none; }
         width: 100%;
         padding-left: 45px;
         padding-right: 0;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        float: none !important;
+        clear: none !important;
     }
 
     .timeline-item.right {
-        left: 0%;
+        margin-top: 0;
     }
 
     .timeline-item.left::after,

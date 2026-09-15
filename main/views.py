@@ -94,4 +94,4 @@ def edit_experience(request, id):
         'name': 'Fatma Widya Rachma', 
         'experience': experience, 
     }
-    return render(request, "edit_experience.html", context)
+    return render(request, "components/edit_experience.html", context)
