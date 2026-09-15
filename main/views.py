@@ -19,14 +19,14 @@ def show_main(request): #view untuk profil
 # View Utama Experience (Mengambil data langsung dari database + Fitur Search)
 def show_experience(request):
     search_query = request.GET.get("search", "").strip()
-    experiences = Experience.objects.all()
+    experiences = Experience.objects.all().order_by('-id')
     
     if search_query:
         experiences = experiences.filter(title__icontains=search_query)
 
     context = {
         "name": "Fatma Widya Rachma",
-        "experience_list": experiences,  # Disesuaikan dengan nama variabel di template HTML!
+        "experience_list": experiences, 
         "search_query": search_query,
     }
     return render(request, "experience.html", context)
