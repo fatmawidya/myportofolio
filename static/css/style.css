@@ -440,6 +440,8 @@ summary.accordion-header::marker { display: none; }
 
 /* Empty State */
 .empty-state {
+    position: relative;
+    z-index: 1;
     text-align: center;
     padding: 3rem 1.5rem;
     background-color: #ffffff;
