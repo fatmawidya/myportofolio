@@ -151,4 +151,4 @@ MAILERS = {
 }
 
 # gunakan https:// untuk trailing urlnya
-CSRF_TRUSTED_ORIGINS = ["https://fatma-widya-myportofolio.pws.cs.ui.ac.id/experience/"]
+CSRF_TRUSTED_ORIGINS = ["https://fatma-widya-myportofolio.pws.cs.ui.ac.id"]
