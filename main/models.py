@@ -1,9 +1,9 @@
 import uuid
 from django.db import models
 
-class Experience(models.Model): # Buat tabel 'Experience' di database
+class Experience(models.Model): 
     EXPERIENCE_CHOICES = [
-        ('internship', 'Internship'), # Opsi 1: ('nilai_di_database', 'teks_tampilan')
+        ('internship', 'Internship'), 
         ('research', 'Research'),
         ('volunteer', 'Volunteer'),
         ('part-time', 'Part-Time'),
@@ -20,12 +20,12 @@ class Experience(models.Model): # Buat tabel 'Experience' di database
     started_at = models.DateTimeField() # Tanggal dimulai
     ended_at = models.DateTimeField(blank=True, null=True) # Tanggal selesai, boleh kosong kalau masih berjalan
 
-    def __str__(self): # Fungsi bawaan Python buat ngatur representasi teks dari objek
-        return self.title # nampilin judul pengalaman pas objek ini dipanggil/dilihat
+    def __str__(self): 
+        return self.title 
     
     @property
-    def is_ongoing(self): # Fungsi buat ngecek apakah posisi ini masih berjalan
-        return self.ended_at is None # Mengembalikan True jika ended_at kosong (belum selesai)
+    def is_ongoing(self):
+        return self.ended_at is None 
 
 # ============== EDUCATION ====================
 

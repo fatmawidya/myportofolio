@@ -1,16 +1,34 @@
-    {% extends 'base.html' %}
-    {% block content %}
-    <main>
-        <section class="accordion-section container" id="education">
-            <h1 class="section-title">EDUCATION</h1>
-            <p class="section-subtitle">
-                From early school days to studying Information Systems at UI.
-            </p>
+{% extends 'base.html' %}
+{% block content %}
+<main>
+    <section class="accordion-section container" id="education">
+        <!-- Header Education -->
+        <div class="experience-header">
+            <div>
+                <h1 class="section-title">EDUCATION</h1>
+                <p class="section-subtitle">
+                    From early school days to studying Information Systems at UI.
+                </p>
+            </div>
+            <a href="{% url 'main:create_education' %}" class="btn-submit">+ Add Education</a>
+        </div>
 
-            <div class="timeline-container">
-                {% for edu in education_list %}
-                    <div class="timeline-item {% if forloop.counter0|divisibleby:2 %}left{% else %}right{% endif %}">
-                    
+        <!-- Search Bar-->
+        <div class="experience-search">
+            <input 
+                type="text" 
+                id="searchEducation" 
+                placeholder="Search education by school, degree, or major..." 
+                onkeyup="filterEducation()"
+                class="experience-search__input"
+            />
+            <button type="button" onclick="filterEducation()" class="btn-submit">Search</button>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="timeline-container" id="educationList">
+            {% for edu in education_list %}
+                <div class="timeline-item {% if forloop.counter0|divisibleby:2 %}left{% else %}right{% endif %}">
                     <div class="timeline-card" onclick="toggleGlow(this)">
                         <div class="timeline-logo">
                             {% if edu.thumbnail %}
@@ -29,11 +47,18 @@
                                 {{ edu.start_year }} &ndash; {% if edu.end_year %}{{ edu.end_year }}{% else %}Present{% endif %}
                             </p>
                             {% if edu.description %}
-                                <p class="timeline-desc" style="white-space: pre-line;">{{ edu.description }}</p>
+                                <p class="timeline-desc">{{ edu.description }}</p>
                             {% endif %}
+
+                            <!-- Tombol Edit & Delete -->
+                            <div class="accordion-actions">
+                                <a href="{% url 'main:edit_education' edu.id %}" class="btn-edit" onclick="event.stopPropagation()">Edit</a>
+                                <div onclick="event.stopPropagation()">
+                                    {% include "components/education_delete_model.html" with education=edu %}
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             {% empty %}
                 <p class="empty-state">
@@ -45,11 +70,25 @@
 </main>
 
 <script>
-    function toggleGlow(card) {
-        document.querySelectorAll('.timeline-card').forEach(c => {
-            if (c !== card) c.classList.remove('active');
-        });
-        card.classList.toggle('active');
-    }
+function toggleGlow(card) {
+    document.querySelectorAll('.timeline-card').forEach(c => {
+        if (c !== card) c.classList.remove('active');
+    });
+    card.classList.toggle('active');
+}
+
+function filterEducation() {
+    const input = document.getElementById('searchEducation').value.toLowerCase();
+    const items = document.querySelectorAll('#educationList .timeline-item');
+
+    items.forEach(item => {
+        const text = item.innerText.toLowerCase();
+        if (text.includes(input)) {
+            item.style.display = "";
+        } else {
+            item.style.display = "none";
+        }
+    });
+}
 </script>
-    {% endblock content %}
+{% endblock content %}

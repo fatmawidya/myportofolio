@@ -1,0 +1,25 @@
+<!-- Tombol Trigger Delete -->
+<button popovertarget="delete-modal-{{ education.id }}" class="btn-delete" type="button">
+    Delete
+</button>
+
+<!-- Modal Popover -->
+<div id="delete-modal-{{ education.id }}" popover class="experience-delete-modal">
+    <button popovertarget="delete-modal-{{ education.id }}" popovertargetaction="hide" class="experience-delete-modal__backdrop" aria-label="Close"></button>
+    
+    <div class="experience-delete-modal__content">
+        <button popovertarget="delete-modal-{{ education.id }}" popovertargetaction="hide" class="experience-delete-modal__close">&times;</button>
+        
+        <h2>Delete Education?</h2>
+        <p>Are you sure you want to delete <strong>{{ education.institution }}</strong>?</p>
+        
+        <div class="experience-delete-modal__actions">
+            <button popovertarget="delete-modal-{{ education.id }}" popovertargetaction="hide" class="btn-cancel" type="button">Cancel</button>
+            
+            <form action="{% url 'main:delete_education' education.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Yes, Delete</button>
+            </form>
+        </div>
+    </div>
+</div>

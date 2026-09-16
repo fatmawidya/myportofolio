@@ -98,3 +98,52 @@ Berikut adalah 4 contoh interaksi saya bersama AI selama proses pengerjaan:
 * Tujuan: Merapikan kalimat pada jawaban refleksi di README agar memenuhi standar pengumpulan tugas tanpa menghilangkan poin utama yang ingin saya sampaikan.
 * Respon AI: Merapikan struktur paragraf dan memperbaiki susunan kata agar kalimat refleksi menjadi lebih jelas dan sistematis.
 * Tindakan Saya: Saya membaca ulang hasilnya, menghapus bagian kalimat yang terasa terlalu rumit atau teoritis, dan menyesuaikannya kembali agar benar-benar mencerminkan pengalaman yang saya alami saat koding.
+
+### Tugas 3
+
+1. Penggunaan ModelForm pada Django jauh lebih disukai dibandingkan membuat form HTML secara manual karena ModelForm secara otomatis menghubungkan skema field yang ada pada models.py langsung ke dalam elemen input HTML. Hal ini menerapkan prinsip Don't Repeat Yourself (DRY), sehingga kita tidak perlu menulis tag input dan label HTML satu per satu secara manual, maupun menangkap request POST satu demi satu di fungsi views.py. Selain efisiensi penulisan kode, ModelForm menyediakan mekanisme validasi bawaan (built-in validation) yang kuat untuk memeriksa tipe data, panjang karakter, maupun format input (seperti URL atau tanggal) secara otomatis, serta mempermudah penyimpanan data ke basis data hanya dengan memanggil metode form.save(). Adapun kewajiban menambahkan tag {% csrf_token %} pada form berbasis metode POST adalah sebagai langkah keamanan wajib untuk mencegah serangan Cross-Site Request Forgery (CSRF). Tag ini bekerja dengan menghasilkan sebuah token rahasia yang unik dan diacak pada setiap sesi form HTML. Ketika form dikirimkan, Django akan memverifikasi apakah token yang dikirim oleh pengguna cocok dengan token yang dicatat server. Hal ini memastikan bahwa permintaan (request) pembaruan data benar-benar berasal dari pengguna yang sah melalui halaman web kita, bukan dari situs berbahaya pihak ketiga yang mencoba memalsukan instruksi atas nama pengguna.
+
+2. JSON (JavaScript Object Notation) lebih disukai dalam pengembangan aplikasi web modern dibandingkan XML (Extensible Markup Language) karena beberapa alasan utama berikut:
+^ Ukuran Payload Lebih Ringan: JSON memiliki struktur penulisan key-value yang jauh lebih ringkas tanpa membutuhkan tag pembuka dan penutup yang panjang seperti pada XML. Hal ini membuat ukuran berkas data JSON menjadi lebih kecil, menghemat konsumsi bandwidth, dan mempercepat waktu transmisi data melalui jaringan.
+^ Kompatibilitas Alami dengan JavaScript: JSON merupakan format data bawaan dari bahasa pemrograman JavaScript. Oleh karena itu, aplikasi web modern di sisi klien (client-side) dapat memproses (parse) data JSON secara langsung menjadi objek native JavaScript menggunakan perintah JSON.parse() dengan sangat cepat, tanpa memerlukan parser DOM yang rumit dan berat seperti pada XML.
+^ Struktur Data yang Fleksibel dan Terstruktur: JSON memetakan data secara intuitif ke dalam tipe data dasar seperti array, object, string, number, dan boolean yang selaras dengan berbagai bahasa pemrograman modern saat ini.
+^ Kemudahan Pembacaan Kode (Readability): Struktur sintaksis JSON jauh lebih bersih, rapi, dan mudah dibaca serta dipahami oleh pengembang (human-readable) saat melakukan debugging API.
+
+3. Alur pemrosesan saat fungsi view digunakan untuk mengembalikan data portofolio dalam bentuk JSON adalah sebagai berikut:
+1) Pengiriman Permintaan (Request): Klien (browser atau aplikasi frontend) mengirimkan HTTP Request ke URL spesifik yang mengarah pada fungsi view pemroses JSON (misalnya /json/).
+2) Pengambilan Data dari Model: Fungsi view memanggil Django ORM untuk mengambil data portofolio dari basis data (misalnya Experience.objects.all() atau Education.objects.all()). Hasil dari kueri ini berupa objek QuerySet.
+3) Proses Serialization: Fungsi view mengumpankan objek QuerySet tersebut ke dalam modul serializer Django, seperti serializers.serialize('json', data).
+4) Penyusunan HTTP Response: Data string berformat JSON hasil serialisasi dibungkus ke dalam objek HttpResponse dengan menentukan header content_type="application/json" (atau menggunakan JsonResponse).
+5) Pengiriman Respon (Response): Django mengembalikan HTTP Response berisi payload JSON berstatus 200 OK kembali ke browser atau klien untuk diolah lebih lanjut.
+Kita diwajibkan melakukan proses serialization sebelum data dikembalikan karena objek QuerySet maupun instance model di Django merupakan objek bawaan bahasa Python yang tersimpan di dalam memori server. Objek kompleks berbasis Python ini tidak dapat dikirimkan begitu saja melalui protokol jaringan HTTP, dan tidak dapat dibaca oleh bahasa pemrograman lain di sisi klien seperti JavaScript. Proses serialization berfungsi untuk menerjemahkan atau mengubah objek kompleks Python/Django tersebut menjadi format string standar (seperti JSON) yang bersifat universal, sehingga data dapat ditransmisikan melintasi jaringan dan dibaca dengan mudah oleh aplikasi apa pun.
+
+### Pengungkapan AI (AI Disclosure)
+
+Dalam pengerjaan Tugas Individu 3 ini, saya kembali memanfaatkan AI (Gemini) sebagai teman diskusi interaktif dan pembimbing koding. AI membantu saya dalam memahami alur kerja ModelForm, mekanisme pembuatan modal konfirmasi menggunakan Popover API, serta penerapan serialisasi data berformat JSON pada arsitektur Django.
+
+Seluruh saran, struktur HTML, maupun cuplikan kode CSS dari AI tidak pernah saya salin dan tempel secara mentah. Saya selalu mempelajari logika penerapannya, menguji fungsionalitasnya di lingkungan server lokal, dan menyesuaikannya secara manual agar pas dengan palet warna neobrutalisme serta struktur berkas Django pada proyek portofolio saya. Terdapat beberapa saran tata letak dan struktur komponen dari AI yang saya modifikasi ulang, seperti menyatukan styling form Education dan Experience agar efisien dan menghindari duplikasi berkas CSS.
+
+Selain mendampingi pemecahan kendala koding, AI juga saya gunakan untuk merapikan susunan tata bahasa dan artikulasi kalimat pada jawaban refleksi README ini agar terlihat terstruktur tanpa mengubah ide dan pemahaman dasar yang saya dapatkan selama proses pengerjaan tugas.
+
+Berikut adalah 4 interaksi nyata saya bersama AI selama pengerjaan Tugas 3:
+
+1) Prompt: "Bagaimana cara membuat forms.py menggunakan ModelForm di Django lalu dibungkus agar tampilan input form-nya tetap mengusung gaya neobrutalisme?"
+Tujuan: Memahami cara kerja ModelForm di Django sekaligus menjaga konsistensi tampilan form input agar memiliki border tebal dan bayangan tegas sesuai tema website.
+Respon AI: Memberikan struktur kelas ExperienceForm pada forms.py beserta contoh pembungkus tag HTML <form> yang menggunakan class .form-container dan .form-group.
+Tindakan Saya: Saya membuat berkas main/forms.py, mendefinisikan field title, category, thumbnail, started_at, ended_at, dan description, lalu membungkus tag form HTML saya di template menggunakan class generik agar langsung menerapkan aturan CSS neobrutalisme secara otomatis.
+
+
+2) Prompt: "Kenapa modal delete di halaman saya bocor ke dalam kartu dan bikin tombol Edit ketarik jadi tinggi banget?"
+Tujuan: Memperbaiki kerusakan tata letak kartu ketika file komponen modal hapus (education_delete_modal.html) di-include ke dalam iterasi loop kartu.
+Respon AI: Menjelaskan bahwa elemen modal belum menggunakan atribut HTML popover dan class .experience-delete-modal yang terpisah dari flow dokumen kartu.
+Tindakan Saya: Saya memperbarui isi file modal komponen dengan memanfaatkan Popover API bawaan HTML5 (popovertarget dan popover) serta menyesuaikan nama kelasnya agar modal melayang dengan latar transparan hitam tepat di tengah layar ketika tombol Delete diklik.
+
+3) Prompt: "Jelaskan alur serialisasi data Django dari QuerySet menjadi JSON dan kenapa kita tidak bisa langsung mengembalikan objek QuerySet ke response HTTP?"
+Tujuan: Memahami konsep teoretis serialisasi data di Django untuk keperluan pembuatan API endpoint dan penyusunan jawaban reflektif.
+Respon AI: Menjelaskan bahwa QuerySet adalah objek Python internal yang tidak serializable secara langsung ke format teks HTTP, sehingga memerlukan modul serializers.serialize() untuk diubah menjadi string JSON.
+Tindakan Saya: Saya menerapkan fungsi view show_json di main/views.py menggunakan serializers.serialize('json', data) dan memanfaatkan pemahaman tersebut untuk menyusun poin refleksi di README.
+
+4) Prompt: "Tolong perbaiki susunan tata bahasa dan keterbacaan jawaban refleksi tugas PBP ini agar poin-poin teoretisnya tersampaikan dengan runtut dan profesional."
+Tujuan: Merapikan penyusunan kalimat pada dokumen README agar memenuhi standar pengumpulan tanpa menghilangkan konteks pemahaman pribadi saya.
+Respon AI: Merapikan struktur kalimat, menyelaraskan istilah teknis (seperti payload, serialization, dan CSRF), serta memperjelas alur penjelasan pada nomor 1, 2, dan 3.
+Tindakan Saya: Saya membaca kembali teks hasil perbaikan tata bahasa tersebut, menyesuaikan beberapa istilah agar tetap mencerminkan gaya bahasa saya, dan memastikan bahwa jawaban tersebut jujur sesuai dengan materi yang telah dipelajari.

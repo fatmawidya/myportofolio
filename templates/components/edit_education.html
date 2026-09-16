@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container">
+    <div class="form-card">
+        <h1 class="section-title">Edit Education</h1>
+        <p class="section-subtitle">Update your educational background information.</p>
+
+        <form method="POST" action="{% url 'main:edit_education' education.id %}" class="custom-form">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="form-error">{{ field.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-actions">
+                <a href="{% url 'main:show_education' %}" class="btn-cancel">Cancel</a>
+                <button type="submit" class="btn-submit">Update Education</button>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock content %}
