@@ -1,6 +1,6 @@
 from django.urls import path
 
-from main.views import show_education, show_main, show_experience, create_experience, get_experience_json, get_experience_xml, delete_experience, edit_experience, create_education, edit_education, delete_education
+from main.views import show_education, show_main, show_experience, create_experience, get_experience_json, get_experience_xml, delete_experience, edit_experience, create_education, edit_education, delete_education, register, login, logout, login_user, logout_user, toggle_star
 
 app_name = "main"
 
@@ -21,4 +21,16 @@ urlpatterns = [
     # API Endpoints
     path("api/experience/json/", get_experience_json, name="get_experience_json"),
     path("api/experience/xml/", get_experience_xml, name="get_experience_xml"),
+
+    #login logout
+    path("register/", register, name="register"),
+    path("login/", login_user, name="login"),
+    path("logout/", logout_user, name="logout"),
+
+    #STARS
+    path(
+    "experience/<uuid:experience_id>/star/",
+        toggle_star,
+        name="toggle_star",
+    ),
 ]

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block meta %}
+    <title>Register - {{ name }}</title>
+{% endblock meta %}
+{% block content %}
+    <section class="container form-section">
+        <h1 class="section-title">Create an Account</h1>
+        
+        <form method="POST" action="{% url 'main:register' %}" class="form-container">
+            {% csrf_token %}
+            {% for error in form.non_field_errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <div class="form-help">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login
+                </button>
+            </div>
+        </form>
+        <div>Already have an account? <a href="{% url 'main:login' %}">Log in here</a>.</div>
+    </section>
+{% endblock content %}

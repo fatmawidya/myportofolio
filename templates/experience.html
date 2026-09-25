@@ -1,7 +1,6 @@
     {% extends 'base.html' %}
     {% block content %}
     <main>
-        <!-- aku sesuain dengan layout aku sebelumnya -->
         <section class="accordion-section container" id="experience">
             <div class="experience-header">
                 <div>
@@ -10,7 +9,9 @@
                         A glimpse into my journey so far.
                     </p>
                 </div>
-            <a href="{% url 'main:create_experience' %}" class="btn-submit">+ Add Experience</a>
+                {% if user.is_superuser %}
+                    <a href="{% url 'main:create_experience' %}" class="btn-submit">+ Add Experience</a>
+                {% endif %}
         </div>
 
         <!-- Search Bar -->
@@ -57,12 +58,17 @@
                             </div>
 
                             <div class="accordion-actions">
-                                <a href="{% url 'main:edit_experience' exp.id %}" class="btn-submit">
-                                    <i class="fa-solid fa-pen"></i> Edit
-                                </a>
+                                {% if user.is_superuser %}
+                                    <a href="{% url 'main:edit_experience' exp.id %}" class="btn-submit">
+                                        <i class="fa-solid fa-pen"></i> Edit
+                                    </a>
+                                {% endif %}
 
                                 <!-- Delete Model -->
-                                {% include "components/experience_delete_model.html" with experience=exp %}
+                                {% include "components/experience_star.html" with experience=exp %}
+                                {% if user.is_superuser %}
+                                    {% include "components/experience_delete_model.html" with experience=exp %}
+                                {% endif %}
                             </div>
                         </div>
                     </details>
