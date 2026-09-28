@@ -54,7 +54,7 @@
 
                             <!-- Tombol Edit & Delete -->
                             <div class="accordion-actions">
-                                {% if user.is_superuser %}
+                                {% if user.is_superuser or is_editor %}
                                     <a href="{% url 'main:edit_education' edu.id %}" class="btn-edit" onclick="event.stopPropagation()">Edit</a>
                                 {% endif %}
                                 <div onclick="event.stopPropagation()">

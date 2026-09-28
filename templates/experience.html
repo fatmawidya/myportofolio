@@ -58,7 +58,7 @@
                             </div>
 
                             <div class="accordion-actions">
-                                {% if user.is_superuser %}
+                                {% if user.is_superuser or is_editor %}
                                     <a href="{% url 'main:edit_experience' exp.id %}" class="btn-submit">
                                         <i class="fa-solid fa-pen"></i> Edit
                                     </a>

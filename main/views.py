@@ -11,6 +11,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied       
 import datetime
 
+# Helper untuk mengecek apakah user adalah Editor
+def is_editor_user(user):
+    return user.is_authenticated and user.groups.filter(name='Editor').exists()
+
 def show_main(request):
     last_login = request.COOKIES.get('last_login', 'No active login session / Cookie not found')
     context = {
@@ -27,10 +31,9 @@ def show_main(request):
 
 def register(request):
     form = UserCreationForm(request.POST or None)
-
     if request.method == "POST" and form.is_valid():
         form.save()
-        messages.success(request, "Akun berhasil dibuat. Silakan login.")
+        messages.success(request, "Account created successfully. Please log in.")
         return redirect("main:login")
 
     context = {
@@ -41,7 +44,6 @@ def register(request):
 
 def login_user(request):
     form = AuthenticationForm(request, data=request.POST or None)
-
     if request.method == "POST" and form.is_valid():
         user = form.get_user()
         login(request, user)
@@ -64,7 +66,6 @@ def logout_user(request):
 @login_required(login_url="/login/")
 def toggle_star(request, experience_id):
     experience = get_object_or_404(Experience, pk=experience_id)
-
     if request.method == "POST":
         # Jika akun ini sudah pernah memberi star, batalkan star-nya.
         # Jika belum, tambahkan star.
@@ -86,15 +87,17 @@ def show_experience(request):
         "name": "Fatma Widya Rachma",
         "experience_list": experiences, 
         "search_query": search_query,
+        "is_editor": is_editor_user(request.user), #KIRIM STATUS KE EDITOR
     }
     return render(request, "experience.html", context)
 
 @login_required(login_url="/login/")
 def create_experience(request):
+    # HANYA SUPERUSER
     if not request.user.is_superuser:
         raise PermissionDenied
+    
     form = ExperienceForm(request.POST or None)
-
     if request.method == "POST" and form.is_valid():
         form.save()
         messages.success(request, "Experience successfully added!")
@@ -108,8 +111,10 @@ def create_experience(request):
 
 @login_required(login_url="/login/")
 def edit_experience(request, id):
-    if not request.user.is_superuser:
+    # SUPERUSER ATAU EDITOR
+    if not (request.user.is_superuser or is_editor_user(request.user)):
         raise PermissionDenied
+    
     experience = get_object_or_404(Experience, pk=id)
     form = ExperienceForm(request.POST or None, instance=experience)
 
@@ -127,8 +132,10 @@ def edit_experience(request, id):
 
 @login_required(login_url="/login/")
 def delete_experience(request, id):
+    # HANYA SUPERUSER
     if not request.user.is_superuser:
         raise PermissionDenied
+    
     experience = get_object_or_404(Experience, pk=id)
     if request.method == "POST":
         experience.delete()
@@ -152,32 +159,22 @@ def get_experience_xml(request):
     data = serializers.serialize("xml", experiences)
     return HttpResponse(data, content_type="application/xml")
 
-@login_required(login_url="/login/")
-def toggle_star(request, experience_id):
-    experience = get_object_or_404(Experience, pk=experience_id)
-
-    if request.method == "POST":
-        if request.user in experience.starred_by.all():
-            experience.starred_by.remove(request.user)
-        else:
-            experience.starred_by.add(request.user)
-
-    return redirect("main:show_experience")
-
 # ================= EDUCATION =================
 def show_education(request):
     context = {
         "name": "Fatma Widya Rachma",
         "education_list": Education.objects.all().order_by('-start_year'),
+        "is_editor": is_editor_user(request.user),
     }
     return render(request, "educational.html", context)
 
 @login_required(login_url="/login/")
 def create_education(request):
+    # HANYA SUPERUSER
     if not request.user.is_superuser:
         raise PermissionDenied
+    
     form = EducationForm(request.POST or None)
-
     if request.method == "POST" and form.is_valid():
         form.save()
         messages.success(request, "Education successfully added!")
@@ -191,8 +188,10 @@ def create_education(request):
 
 @login_required(login_url="/login/")
 def edit_education(request, id):
-    if not request.user.is_superuser:
+    #SUPERUSER ATAU EDITOR
+    if not (request.user.is_superuser or is_editor_user(request.user)):
         raise PermissionDenied
+    
     education = get_object_or_404(Education, pk=id)
     form = EducationForm(request.POST or None, instance=education)
 
@@ -210,8 +209,10 @@ def edit_education(request, id):
 
 @login_required(login_url="/login/")
 def delete_education(request, id):
+    # HANYA SUPERUSER
     if not request.user.is_superuser:
         raise PermissionDenied
+    
     education = get_object_or_404(Education, pk=id)
     if request.method == "POST":
         education.delete()
