@@ -31,7 +31,13 @@
         <div class="timeline-container" id="educationList">
             {% for edu in education_list %}
                 <div class="timeline-item {% if forloop.counter0|divisibleby:2 %}left{% else %}right{% endif %}">
-                    <div class="timeline-card" onclick="toggleGlow(this)">
+                    <div class="timeline-card">
+                        {% if edu.is_current %}
+                            <span class="badge badge-ongoing">Active</span>
+                        {% else %}
+                            <span class="badge badge-finished">Graduated</span>
+                        {% endif %}
+                        
                         <div class="timeline-logo">
                             {% if edu.thumbnail %}
                                 <img src="{{ edu.thumbnail }}" alt="{{ edu.institution }}">

@@ -40,6 +40,12 @@
                                 </div>
                             </div>
                             <div class="accordion-right">
+                                {% if exp.is_ongoing %}
+                                    <span class="badge badge-ongoing">Ongoing</span>
+                                {% else %}
+                                    <span class="badge badge-finished">Finished</span>
+                                {% endif %}
+
                                 <span class="accordion-date">
                                     {% if exp.is_ongoing %}
                                         {{ exp.started_at|date:"Y" }} &ndash; Present
