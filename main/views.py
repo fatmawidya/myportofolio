@@ -172,7 +172,10 @@ def show_education(request):
     }
     return render(request, "educational.html", context)
 
+@login_required(login_url="/login/")
 def create_education(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied
     form = EducationForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
@@ -186,7 +189,10 @@ def create_education(request):
     }
     return render(request, "create_education.html", context)
 
+@login_required(login_url="/login/")
 def edit_education(request, id):
+    if not request.user.is_superuser:
+        raise PermissionDenied
     education = get_object_or_404(Education, pk=id)
     form = EducationForm(request.POST or None, instance=education)
 
@@ -202,7 +208,10 @@ def edit_education(request, id):
     }
     return render(request, "components/edit_education.html", context)
 
+@login_required(login_url="/login/")
 def delete_education(request, id):
+    if not request.user.is_superuser:
+        raise PermissionDenied
     education = get_object_or_404(Education, pk=id)
     if request.method == "POST":
         education.delete()

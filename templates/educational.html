@@ -10,7 +10,9 @@
                     From early school days to studying Information Systems at UI.
                 </p>
             </div>
-            <a href="{% url 'main:create_education' %}" class="btn-submit">+ Add Education</a>
+            {% if user.is_superuser %}
+                <a href="{% url 'main:create_education' %}" class="btn-submit">+ Add Education</a>
+            {% endif %}
         </div>
 
         <!-- Search Bar-->
@@ -52,9 +54,13 @@
 
                             <!-- Tombol Edit & Delete -->
                             <div class="accordion-actions">
-                                <a href="{% url 'main:edit_education' edu.id %}" class="btn-edit" onclick="event.stopPropagation()">Edit</a>
+                                {% if user.is_superuser %}
+                                    <a href="{% url 'main:edit_education' edu.id %}" class="btn-edit" onclick="event.stopPropagation()">Edit</a>
+                                {% endif %}
                                 <div onclick="event.stopPropagation()">
-                                    {% include "components/education_delete_model.html" with education=edu %}
+                                    {% if user.is_superuser %}
+                                        {% include "components/education_delete_model.html" with education=edu %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
