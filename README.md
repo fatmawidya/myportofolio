@@ -1,149 +1,128 @@
-Nama : Fatma Widya Rachma
+# MY PORTFOLIO — Fatma Widya Rachma
 
-NPM : 2506533614
+Website portofolio pribadi yang memuat profil, riwayat pengalaman, serta latar belakang pendidikan.
 
-Kelas : PBP A
+---
 
+## 👤 Identitas
 
-### Tugas 1
+- **Nama:** Fatma Widya Rachma
+- **NPM:** 2506533614
+- **Program Studi:** S1 Sistem Informasi
+- **Kelas:** PBP A
 
-1. Pada Tutorial dan Tugas 1, Anda diberi kebebasan untuk menentukan tampilan dari website portofolio Anda. Saat Anda merancang struktur HTML yang digunakan, apakah Anda menggunakan elemen semantik HTML5 seperti <section>, <article>, atau <aside>? Jika iya, bagaimana elemen tersebut membantu Anda dalam membuat static web? Jika tidak, mengapa tanpa elemen tersebut sudah memenuhi kebutuhan desain Anda?
-Jawab: Ya, saat merancang struktur HTML untuk website portofolio ini, saya menggunakan elemen-elemen semantik HTML5 seperti <header>, <nav>, <section>, <article>, <footer>, serta tag interaktif bawaan <details> dan <summary> pada komponen My Journey. Menurut saya, penggunaan elemen semantik ini sangat membantu dalam proses pembuatan static web karena kode yang saya tulis menjadi jauh lebih terstruktur dan rapi tanpa terjebak dalam penumpukan tag <div> yang berlebihan (div soup). Selain itu, elemen semantik mempermudah saya dalam menyusun aturan CSS di style.css agar lebih spesifik. Elemen semantik ini juga membantu screen reader dan mesin pencari dalam memahami hirarki serta peran dari setiap bagian konten di halaman web saya secara kontekstual.
+---
 
-2. Ketika Anda mengatur CSS Anda agar tetap responsive, tantangan tata letak apa yang Anda temukan? Bagaimana Anda mengevaluasi elemen mana yang harus diubah posisinya atau diprioritaskan ukurannya saat berpindah dari tampilan desktop ke mobile?
-Jawab: Saat mengatur CSS agar tetap responsif, tantangan tata letak utama yang saya temukan adalah menyesuaikan pergeseran struktur halaman dari tampilan desktop dua kolom (multi-column) menjadi tampilan seluler satu kolom (single-column) yang tetap simetris, terutama pada bagian Hero Section dan My Journey. Cara saya mengevaluasi elemen yang harus diubah adalah dengan memprioritaskan informasi penting, seperti Nama dan NPM, agar tetap terlihat di bagian atas layar (above the fold) ketika dibuka melalui HP. Oleh karena itu, saya mengubah tata letak CSS Grid dua kolom pada Hero Section menjadi tumpukan vertikal (stacked layout), memperkecil batas lebar foto menjadi 190px, dan memanfaatkan fungsi clamp() untuk ukuran font. Pada bagian My Journey, saya juga mengurangi nilai padding dan margin kartu melalui media queries agar seluruh isi accordion tetap muat dengan rapi di layar sempit tanpa terpotong.
+## 🛠️ Ringkasan Fitur & Halaman
 
-3. Website yang Anda buat saat ini adalah static web murni. Batasan apa yang Anda rasakan saat mencoba menyajikan informasi pada portofolio Anda secara optimal? Berdasarkan batasan tersebut, fungsionalitas dinamis apa yang paling ingin Anda persiapkan dan tambahkan pada iterasi proyek selanjutnya?
-Jawab: Batasan utama yang saya rasakan saat membuat website statis murni ini adalah masalah kepraktisan dalam mengelola konten. Semua informasi mengenai diri saya, riwayat pengalaman, dan kontak harus saya tulis satu per satu secara manual (hardcoded) di dalam berkas HTML. Jika suatu saat saya ingin menambahkan pengalaman baru atau sekadar mengubah isi bio, saya wajib membuka kembali VS Code dan mengedit berkas HTML tersebut secara langsung. Proses ini terasa kurang efisien jika isi portofolio terus bertambah di masa depan. Berdasarkan batasan tersebut, fungsionalitas dinamis yang paling ingin saya tambahkan pada iterasi proyek selanjutnya adalah pengintegrasian database menggunakan arsitektur Django MVT. Dengan adanya database dan fitur Django Admin, saya bisa menambah atau memperbarui data portofolio dengan lebih mudah melalui halaman pengelola (dashboard) tanpa perlu mengotak-atik kode HTML lagi. Selain itu, saya juga ingin membuat formulir kontak yang benar-benar dapat memproses pesan pengunjung dan mengirimkannya secara otomatis ke email saya.
+### 1. Navigasi Utama & Konten
+- **About Me:** Memuat informasi dasar, latar belakang, foto profil, dan status waktu login terakhir (*session*).
+- **Experience:** Komponen kartu pengalaman kerja/organisasi yang dilengkapi periode, deskripsi, indikator status (*ongoing* atau *finished*), serta fitur apresiasi berupa *star*.
+- **Education:** Rekam jejak jenjang pendidikan formal yang menampilkan institusi, jurusan, dan status keaktifan.
 
-### Pengungkapan AI (AI Disclosure)
+### 2. Autentikasi & Otorisasi Pengguna (RBAC)
+Menerapkan 4 tingkatan hak akses berbasis peran:
+- **Pengunjung (Guest):** Hanya dapat membaca konten dan endpoint API.
+- **Pengguna Terdaftar:** Dapat membaca konten dan memberikan *toggle star* pada Experience.
+- **Editor:** Memiliki akses pembaca, *toggle star*, serta pengubahan (*edit*) data Experience dan Education.
+- **Superuser (Pemilik):** Memiliki kontrol penuh atas seluruh tindakan *Create, Read, Update,* dan *Delete* (CRUD).
 
-Dalam pengerjaan Tugas Individu 1 ini, saya memanfaatkan AI (Gemini) teman belajar interaktif saya. Setiap kali menghadapi kendala teknis, kebingungan sintaks, atau mencari ide tampilan, AI membantu saya memahami konsep dasar di balik permasalahan tersebut. 
+### 3. Endpoint Layanan Data
+Menyediakan data terstruktur melalui URL:
+- `/json/` & `/xml/` (dengan penerapan `use_natural_foreign_keys=True` untuk menjaga kerahasiaan ID internal database).
 
-Saya tidak pernah langsung menyalin dan menempelkan (copy-paste) kode yang berikan oleh AI ke dalam proyek saya begitu saja. Setiap saran atau snippet kode yang diberikan selalu saya pelajari terlebih dahulu alur logikanya, saya uji coba secara bertahap di lingkungan lokal, dan saya sesuaikan secara manual agar pas dengan kebutuhan proyek. Banyak rekomendasi AI yang perlu saya ubah atau bahkan saya buang karena tidak sesuai dengan tema neobrutalisme yang saya usung maupun struktur Django yang saya gunakan.
+---
 
-Selain membantu dalam eksplorasi CSS dan pemecahan masalah error pada Git, AI juga saya gunakan sebagai alat bantu untuk merapikan tata bahasa pada jawaban refleksi di README ini. Poin-poin refleksi yang tertulis murni berasal dari pengalaman dan pemahaman nyata yang saya alami selama proses koding, lalu saya meminta bantuan AI untuk merangkai kalimatnya agar lebih runtut dan enak dibaca. Hasil dari perbaikan tata bahasa tersebut tetap saya baca ulang dan saya sesuaikan kembali agar bahasanya tetap natural dan mencerminkan sudut pandang saya sebagai mahasiswa.
+## 📂 Struktur Repositori
 
-Berikut adalah 5 contoh interaksi saya bersama AI selama proses pengerjaan:
+```text
+myportofolio/
+├── main/
+│   ├── migrations/
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   └── forms.py
+├── portofolio/
+│   ├── settings.py
+│   ├── urls.py
+│   └── views.py
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── experience.html
+│   ├── educational.html
+│   └── components/
+├── static/
+│   ├── css/
+│   └── img/
+├── manage.py
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
 
-1. Eksplorasi Design Neobrutalism
-   * Prompt: "Gimana cara bikin tombol di CSS biar keliatan neobrutalism?"
-   * Tujuan: Memahami kombinasi warna kontras, ketebalan border, dan shadow yang pas untuk tema neobrutalism.
-   * Respon AI: Memberikan contoh CSS tombol dengan border hitam tebal, bayangan (box-shadow) tegas, dan border-radius: 12px.
-   * Tindakan Saya: Saya mengambil konsep border dan shadow-nya, tetapi nilai border-radius saya ubah manual menjadi 3px di style.css agar sudutnya tetap tajam dan konsisten.
+---
 
-2. Membuat Accordion untuk Section My Journey
-   * Prompt: "Bikin accordion di HTML CSS pake tag details gampang nggak?"
-   * Tujuan: Membuat komponen di section My Journey yang bisa diklik (diperluas) tanpa perlu menggunakan JavaScript.
-   * Respon AI: Menjelaskan penggunaan tag bawaan HTML <details> dan <summary> beserta contoh styling CSS Flexbox-nya.
-   * Tindakan Saya: Saya menerapkan struktur tag tersebut di index.html lalu menyesuaikan styling CSS-nya agar selaras dengan palet warna website saya.
+## 🛠️ Langkah Menjalankan Proyek Lokal
 
-3. Troubleshooting Error Git saat Push ke PWS
-   * Prompt: "Ini knp git push reject mulu sih pas mau push ke pws?"
-   * Tujuan: Mengatasi error non-fast-forward saat mencoba melakukan push kode terbaru ke server PWS UI.
-   * Respon AI: Menjelaskan bahwa riwayat commit lokal dan remote berbeda, serta memberikan opsi perintah git pull --rebase atau force push.
-   * Tindakan Saya: Saya menjalankan perintah git pull pws main --rebase lalu melakukan push ulang hingga kode berhasil ter-update di server PWS.
+### 1. Clone repositori:
 
-4. Penataan Layout Responsif pada Hero Section
-   * Prompt: "Gimana cara bikin foto sama teks sejajar di laptop tapi pas di HP numpuk ke bawah?"
-   * Tujuan: Mengatur tata letak bagian atas web agar tetap simetris di layar PC maupun HP.
-   * Respon AI: Memberikan contoh penggunaan media query CSS Grid untuk mengubah layout 2 kolom menjadi 1 kolom saat layar berukuran kecil.
-   * Tindakan Saya: Saya menerapkan logika media query tersebut dan menambahkan aturan max-width: 190px secara manual pada foto agar tidak memenuhi layar HP.
+```bash
+git clone <URL_REPOSITORY_KAMU>
+cd myportofolio
+```
 
-5. Perbaikan Tata Bahasa Jawaban Refleksi
-   * Prompt: "Tolong benerin tata bahasa refleksi tugas PBP aku dong biar ga kaku dan kalimatnya runtut"
-   * Tujuan: Merapikan kalimat pada jawaban refleksi di README agar memenuhi standar pengumpulan tugas tanpa menghilangkan poin utama yang ingin saya sampaikan.
-   * Respon AI: Merapikan struktur paragraf dan memperbaiki susunan kata agar kalimat refleksi menjadi lebih jelas dan sistematis.
-   * Tindakan Saya: Saya membaca ulang hasilnya, menghapus bagian kalimat yang terasa terlalu rumit atau teoritis, dan menyesuaikannya kembali agar benar-benar mencerminkan pengalaman yang saya alami saat koding.
+### 2. Buat dan aktifkan virtual environment:
 
+#### Windows:
+```cmd
+python -m venv env
+env\Scripts\activate
+```
 
-### Tugas 2
+#### macOS / Linux:
+```bash
+python3 -m venv env
+source env/bin/activate
+```
 
-1. Alur pemrosesan pada arsitektur Model-View-Template (MVT) Django dimulai ketika pengguna memasukkan URL pada browser, yang memicu pengiriman HTTP Request ke server. Django menerima permintaan tersebut dan melakukan pencocokan pola URL melalui portofolio/urls.py yang diteruskan ke main/urls.py menggunakan fungsi include(). Setelah rute terdeteksi, Django memanggil fungsi view yang sesuai pada main/views.py, seperti show_experience atau show_education. Selanjutnya, jika halaman memerlukan data dari basis data, view meminta data tersebut ke main/models.py (misalnya melalui kueri Experience.objects.all()), lalu model mengeksekusi kueri ke basis data SQLite dan mengembalikan data dalam bentuk QuerySet. View kemudian menyusun data ke dalam dictionary konteks dan memanggil template HTML terkait (experience.html atau educational.html) agar Django Template Engine dapat menggabungkan data dinamis dengan variabel dan tag template. Akhirnya, Django mengembalikan halaman HTML yang telah dirender sepenuhnya sebagai HTTP Response berstatus kode 200 OK ke browser pengguna untuk ditampilkan.
+### 3. Install paket dependensi:
 
-2. Unit test sangat penting dalam pengembangan aplikasi web dengan Django karena berperan sebagai jaring pengaman otomatis yang memastikan setiap fungsi, pemetaan URL, logika model, dan tampilan berjalan sesuai ekspektasi tanpa perlu pengujian manual secara berulang di browser setiap kali terjadi perubahan kode. Namun, pengujian dengan test coverage 100% tidak menjamin bahwa kode yang dibuat sepenuhnya bebas dari bug atau error. Hal ini disebabkan karena test coverage hanya mengukur persentase baris kode yang pernah dieksekusi oleh penguji selama proses pengujian berjalan. Angka 100% tidak menjamin kualitas atau kedalaman dari skenario pengujian itu sendiri, sehingga unit test masih bisa melewatkan edge cases (kasus ekstrem), kesalahan logika bisnis, masalah validasi input pengguna yang tak terduga, celah keamanan, maupun kendala integrasi antarkomponen saat aplikasi dijalankan pada lingkungan production.
+```bash
+pip install -r requirements.txt
+```
 
-3. Langkah-langkah implementasi Tugas 2 yang saya lakukan diawali dengan mendefinisikan model Experience dan Education pada berkas main/models.py yang dilengkapi atribut seperti title, description, category, thumbnail, started_at, ended_at, institution, degree, field_of_study, dan start_year, serta method __str__ dan property kondisi is_ongoing maupun is_current. Setelah skema model siap, saya melakukan migrasi dengan menjalankan perintah python manage.py makemigrations untuk mencatat skema tabel baru dan python manage.py migrate untuk menerapkan struktur tersebut ke dalam basis data SQLite lokal. Langkah berikutnya adalah menyusun views dan URL dengan menambahkan fungsi show_experience dan show_education di main/views.py untuk mengambil data model, lalu mengatur rute navigasinya pada main/urls.py menggunakan namespace app_name = "main" dan menghubungkannya ke portofolio/urls.py melalui include("main.urls"). Kemudian, saya memperbarui template HTML pada experience.html dan educational.html menggunakan Django Template Language seperti {{ ... }} untuk menampilkan variabel, {% for %} untuk perulangan kartu, {% if %} untuk percabangan status, serta tag {% empty %} untuk menampilkan pesan kondisi kosong saat data belum ada. Terakhir, saya menyusun unit test pada main/tests.py dengan kelas TestCase dan fungsi reverse() untuk menguji rute URL, ketepatan template, kemunculan data model di HTML, serta penanganan empty state, lalu mengukur ketercakupan pengujian menggunakan perintah coverage. Dalam prosesnya, saya menghadapi kendala teknis berupa kesulitan saat penataan layout CSS untuk elemen thumbnail gambar dan struktur kartu agar tetap simetris serta tidak merusak rasio gambar (distorted/stretched), yang saya atasi dengan menerapkan aturan CSS object-fit: cover serta memanfaatkan layout CSS Grid. Kendala kedua adalah tampilan halaman yang berantakan ketika thumbnail tidak diisi atau bernilai kosong, yang saya selesaikan dengan menambahkan percabangan kondisional {% if experience.thumbnail %} pada template HTML agar elemen gambar hanya dirender ketika URL gambar tersedia.
+### 4. Jalankan migrasi database:
 
-### Pengungkapan AI (AI Disclosure)
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
 
-Dalam pengerjaan Tugas Individu 2 ini, saya memanfaatkan AI (Gemini) teman belajar interaktif saya. Setiap kali menghadapi kendala teknis, kebingungan sintaks unit test, atau mencari solusi tata letak layout, AI membantu saya memahami konsep dasar di balik permasalahan tersebut.
+### 5. Jalankan server pengembangan:
 
-Saya tidak pernah langsung menyalin dan menempelkan (copy-paste) kode yang diberikan oleh AI ke dalam proyek saya begitu saja. Setiap saran atau snippet kode yang diberikan selalu saya pelajari terlebih dahulu alur logikanya, saya uji coba secara bertahap di lingkungan lokal, dan saya sesuaikan secara manual agar pas dengan kebutuhan proyek. Banyak rekomendasi pengujian maupun tampilan dari AI yang perlu saya ubah agar benar-benar mencerminkan kondisi empty state, fungsionalitas variabel di template, maupun struktur Django yang saya gunakan.
+```bash
+python manage.py runserver
+```
 
-Selain membantu dalam penulisan test case dan pemecahan masalah layout CSS, AI juga saya gunakan sebagai alat bantu untuk merapikan tata bahasa pada jawaban refleksi di README ini. Poin-poin refleksi yang tertulis murni berasal dari pengalaman dan pemahaman nyata yang saya alami selama proses koding, lalu saya meminta bantuan AI untuk merangkai kalimatnya agar lebih runtut dan enak dibaca. Hasil dari perbaikan tata bahasa tersebut tetap saya baca ulang dan saya sesuaikan kembali agar bahasanya tetap natural dan mencerminkan sudut pandang saya sebagai mahasiswa.
+Akses aplikasi melalui peramban di `http://127.0.0.1:8000/`.
 
-Berikut adalah 4 contoh interaksi saya bersama AI selama proses pengerjaan:
+---
 
-1. Solusi Layout Gambar Thumbnail pada Kartu Tampilan
-* Prompt: "Gimana cara ngatur CSS biar gambar thumbnail di kartu experience ukurannya pas dan ga ketarik/gepeng?"
-* Tujuan: Mencari solusi penataan tata letak (layout) gambar agar rasio gambar thumbnail tetap simetris pada kartu tampilan.
-* Respon AI: Menjelaskan penggunaan atribut CSS object-fit: cover dan pembatasan batas tinggi (max-height) pada elemen gambar.
-* Tindakan Saya: Saya menerapkan kelas CSS baru untuk thumbnail dengan aturan object-fit: cover dan penataan CSS Grid pada static/css/style.css.
+## 🌐 Live Website
 
-2. Conditional Rendering untuk Thumbnail Kosong pada Template
-* Prompt: "Tampilan kartu jadi jelek pas thumbnail-nya ga diisi URL, gimana cara ngakalin di template HTML Django?"
-* Tujuan: Mencegah munculnya elemen gambar yang rusak (broken image) ketika data thumbnail bernilai None atau kosong.
-* Respon AI: Memberikan contoh percabangan kondisional {% if experience.thumbnail %} pada Django Template Engine.
-* Tindakan Saya: Saya membungkus tag  pada experience.html dengan blok {% if %} agar elemen gambar hanya ditampilkan ketika URL thumbnail tersedia.
+Aplikasi portofolio ini telah di-deploy dan dapat diakses secara langsung melalui tautan berikut:  
+👉 [Fatma's Portfolio Web](https://fatma-widya-myportofolio.pws.cs.ui.ac.id/)
 
-3. Pengujian Method Model dan Atribut Dinamis
-* Prompt: "Gimana cara ngetest status is_ongoing di model Experience kalo ended_at diisi?"
-* Tujuan: Menguji apakah logika property is_ongoing pada model dapat merespons perubahan atribut ended_at dengan benar.
-* Respon AI: Memberikan contoh pengujian dengan mengubah self.experience.ended_at = timezone.now().date(), menyimpan objek (save()), dan memeriksa klausa self.assertFalse(self.experience.is_ongoing).
-* Tindakan Saya: Saya menerapkan metode test_completed_experience tersebut ke dalam main/tests.py untuk memastikan status berubah menjadi tidak aktif ketika tanggal selesai diisi.
+---
 
-4. Perbaikan Tata Bahasa Jawaban Refleksi
-* Prompt: "Tolong benerin tata bahasa refleksi tugas PBP aku dong biar ga kaku dan kalimatnya runtut"
-* Tujuan: Merapikan kalimat pada jawaban refleksi di README agar memenuhi standar pengumpulan tugas tanpa menghilangkan poin utama yang ingin saya sampaikan.
-* Respon AI: Merapikan struktur paragraf dan memperbaiki susunan kata agar kalimat refleksi menjadi lebih jelas dan sistematis.
-* Tindakan Saya: Saya membaca ulang hasilnya, menghapus bagian kalimat yang terasa terlalu rumit atau teoritis, dan menyesuaikannya kembali agar benar-benar mencerminkan pengalaman yang saya alami saat koding.
+# TUGAS 4
 
-### Tugas 3
+1. 
 
-1. Penggunaan ModelForm pada Django jauh lebih disukai dibandingkan membuat form HTML secara manual karena ModelForm secara otomatis menghubungkan skema field yang ada pada models.py langsung ke dalam elemen input HTML. Hal ini menerapkan prinsip Don't Repeat Yourself (DRY), sehingga kita tidak perlu menulis tag input dan label HTML satu per satu secara manual, maupun menangkap request POST satu demi satu di fungsi views.py. Selain efisiensi penulisan kode, ModelForm menyediakan mekanisme validasi bawaan (built-in validation) yang kuat untuk memeriksa tipe data, panjang karakter, maupun format input (seperti URL atau tanggal) secara otomatis, serta mempermudah penyimpanan data ke basis data hanya dengan memanggil metode form.save(). Adapun kewajiban menambahkan tag {% csrf_token %} pada form berbasis metode POST adalah sebagai langkah keamanan wajib untuk mencegah serangan Cross-Site Request Forgery (CSRF). Tag ini bekerja dengan menghasilkan sebuah token rahasia yang unik dan diacak pada setiap sesi form HTML. Ketika form dikirimkan, Django akan memverifikasi apakah token yang dikirim oleh pengguna cocok dengan token yang dicatat server. Hal ini memastikan bahwa permintaan (request) pembaruan data benar-benar berasal dari pengguna yang sah melalui halaman web kita, bukan dari situs berbahaya pihak ketiga yang mencoba memalsukan instruksi atas nama pengguna.
+---
 
-2. JSON (JavaScript Object Notation) lebih disukai dalam pengembangan aplikasi web modern dibandingkan XML (Extensible Markup Language) karena beberapa alasan utama berikut:
-^ Ukuran Payload Lebih Ringan: JSON memiliki struktur penulisan key-value yang jauh lebih ringkas tanpa membutuhkan tag pembuka dan penutup yang panjang seperti pada XML. Hal ini membuat ukuran berkas data JSON menjadi lebih kecil, menghemat konsumsi bandwidth, dan mempercepat waktu transmisi data melalui jaringan.
-^ Kompatibilitas Alami dengan JavaScript: JSON merupakan format data bawaan dari bahasa pemrograman JavaScript. Oleh karena itu, aplikasi web modern di sisi klien (client-side) dapat memproses (parse) data JSON secara langsung menjadi objek native JavaScript menggunakan perintah JSON.parse() dengan sangat cepat, tanpa memerlukan parser DOM yang rumit dan berat seperti pada XML.
-^ Struktur Data yang Fleksibel dan Terstruktur: JSON memetakan data secara intuitif ke dalam tipe data dasar seperti array, object, string, number, dan boolean yang selaras dengan berbagai bahasa pemrograman modern saat ini.
-^ Kemudahan Pembacaan Kode (Readability): Struktur sintaksis JSON jauh lebih bersih, rapi, dan mudah dibaca serta dipahami oleh pengembang (human-readable) saat melakukan debugging API.
+# AI DISCLOSURE
 
-3. Alur pemrosesan saat fungsi view digunakan untuk mengembalikan data portofolio dalam bentuk JSON adalah sebagai berikut:
-1) Pengiriman Permintaan (Request): Klien (browser atau aplikasi frontend) mengirimkan HTTP Request ke URL spesifik yang mengarah pada fungsi view pemroses JSON (misalnya /json/).
-2) Pengambilan Data dari Model: Fungsi view memanggil Django ORM untuk mengambil data portofolio dari basis data (misalnya Experience.objects.all() atau Education.objects.all()). Hasil dari kueri ini berupa objek QuerySet.
-3) Proses Serialization: Fungsi view mengumpankan objek QuerySet tersebut ke dalam modul serializer Django, seperti serializers.serialize('json', data).
-4) Penyusunan HTTP Response: Data string berformat JSON hasil serialisasi dibungkus ke dalam objek HttpResponse dengan menentukan header content_type="application/json" (atau menggunakan JsonResponse).
-5) Pengiriman Respon (Response): Django mengembalikan HTTP Response berisi payload JSON berstatus 200 OK kembali ke browser atau klien untuk diolah lebih lanjut.
-Kita diwajibkan melakukan proses serialization sebelum data dikembalikan karena objek QuerySet maupun instance model di Django merupakan objek bawaan bahasa Python yang tersimpan di dalam memori server. Objek kompleks berbasis Python ini tidak dapat dikirimkan begitu saja melalui protokol jaringan HTTP, dan tidak dapat dibaca oleh bahasa pemrograman lain di sisi klien seperti JavaScript. Proses serialization berfungsi untuk menerjemahkan atau mengubah objek kompleks Python/Django tersebut menjadi format string standar (seperti JSON) yang bersifat universal, sehingga data dapat ditransmisikan melintasi jaringan dan dibaca dengan mudah oleh aplikasi apa pun.
-
-### Pengungkapan AI (AI Disclosure)
-
-Dalam pengerjaan Tugas Individu 3 ini, saya kembali memanfaatkan AI (Gemini) sebagai teman diskusi interaktif dan pembimbing koding. AI membantu saya dalam memahami alur kerja ModelForm, mekanisme pembuatan modal konfirmasi menggunakan Popover API, serta penerapan serialisasi data berformat JSON pada arsitektur Django.
-
-Seluruh saran, struktur HTML, maupun cuplikan kode CSS dari AI tidak pernah saya salin dan tempel secara mentah. Saya selalu mempelajari logika penerapannya, menguji fungsionalitasnya di lingkungan server lokal, dan menyesuaikannya secara manual agar pas dengan palet warna neobrutalisme serta struktur berkas Django pada proyek portofolio saya. Terdapat beberapa saran tata letak dan struktur komponen dari AI yang saya modifikasi ulang, seperti menyatukan styling form Education dan Experience agar efisien dan menghindari duplikasi berkas CSS.
-
-Selain mendampingi pemecahan kendala koding, AI juga saya gunakan untuk merapikan susunan tata bahasa dan artikulasi kalimat pada jawaban refleksi README ini agar terlihat terstruktur tanpa mengubah ide dan pemahaman dasar yang saya dapatkan selama proses pengerjaan tugas.
-
-Berikut adalah 4 interaksi nyata saya bersama AI selama pengerjaan Tugas 3:
-
-1) Prompt: "Bagaimana cara membuat forms.py menggunakan ModelForm di Django lalu dibungkus agar tampilan input form-nya tetap mengusung gaya neobrutalisme?"
-Tujuan: Memahami cara kerja ModelForm di Django sekaligus menjaga konsistensi tampilan form input agar memiliki border tebal dan bayangan tegas sesuai tema website.
-Respon AI: Memberikan struktur kelas ExperienceForm pada forms.py beserta contoh pembungkus tag HTML <form> yang menggunakan class .form-container dan .form-group.
-Tindakan Saya: Saya membuat berkas main/forms.py, mendefinisikan field title, category, thumbnail, started_at, ended_at, dan description, lalu membungkus tag form HTML saya di template menggunakan class generik agar langsung menerapkan aturan CSS neobrutalisme secara otomatis.
-
-
-2) Prompt: "Kenapa modal delete di halaman saya bocor ke dalam kartu dan bikin tombol Edit ketarik jadi tinggi banget?"
-Tujuan: Memperbaiki kerusakan tata letak kartu ketika file komponen modal hapus (education_delete_modal.html) di-include ke dalam iterasi loop kartu.
-Respon AI: Menjelaskan bahwa elemen modal belum menggunakan atribut HTML popover dan class .experience-delete-modal yang terpisah dari flow dokumen kartu.
-Tindakan Saya: Saya memperbarui isi file modal komponen dengan memanfaatkan Popover API bawaan HTML5 (popovertarget dan popover) serta menyesuaikan nama kelasnya agar modal melayang dengan latar transparan hitam tepat di tengah layar ketika tombol Delete diklik.
-
-3) Prompt: "Jelaskan alur serialisasi data Django dari QuerySet menjadi JSON dan kenapa kita tidak bisa langsung mengembalikan objek QuerySet ke response HTTP?"
-Tujuan: Memahami konsep teoretis serialisasi data di Django untuk keperluan pembuatan API endpoint dan penyusunan jawaban reflektif.
-Respon AI: Menjelaskan bahwa QuerySet adalah objek Python internal yang tidak serializable secara langsung ke format teks HTTP, sehingga memerlukan modul serializers.serialize() untuk diubah menjadi string JSON.
-Tindakan Saya: Saya menerapkan fungsi view show_json di main/views.py menggunakan serializers.serialize('json', data) dan memanfaatkan pemahaman tersebut untuk menyusun poin refleksi di README.
-
-4) Prompt: "Tolong perbaiki susunan tata bahasa dan keterbacaan jawaban refleksi tugas PBP ini agar poin-poin teoretisnya tersampaikan dengan runtut dan profesional."
-Tujuan: Merapikan penyusunan kalimat pada dokumen README agar memenuhi standar pengumpulan tanpa menghilangkan konteks pemahaman pribadi saya.
-Respon AI: Merapikan struktur kalimat, menyelaraskan istilah teknis (seperti payload, serialization, dan CSRF), serta memperjelas alur penjelasan pada nomor 1, 2, dan 3.
-Tindakan Saya: Saya membaca kembali teks hasil perbaikan tata bahasa tersebut, menyesuaikan beberapa istilah agar tetap mencerminkan gaya bahasa saya, dan memastikan bahwa jawaban tersebut jujur sesuai dengan materi yang telah dipelajari.
+Pada pengerjaan Tugas 4 ini, Gemini AI hanya digunakan sebagai alat bantu (tool) untuk merapikan struktur penulisan, memformat tata bahasa, dan menyusun dokumentasi teks README yang telah disiapkan secara mandiri. Seluruh logika pemrograman, struktur kode Django, dan pengujian fitur dikerjakan secara langsung tanpa bantuan pembuatan kode otomatis oleh AI.
