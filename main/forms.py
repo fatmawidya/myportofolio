@@ -1,5 +1,7 @@
 from django.forms import ModelForm, TextInput, Textarea, URLInput, Select, DateInput, NumberInput
 from main.models import Experience, Education
+from django.utils.html import strip_tags
+from django.core.exceptions import ValidationError
 
 class ExperienceForm(ModelForm):
     class Meta:
@@ -32,6 +34,17 @@ class ExperienceForm(ModelForm):
                 'placeholder': 'Write your key responsibilities and achievements here.',
             }),
         }
+
+    def clean_title(self):
+        title = strip_tags(self.cleaned_data.get('title', '')).strip()
+        if not title:
+            raise ValidationError(
+                'Position & Organization cannot contain only HTML tags.'
+            )
+        return title
+
+    def clean_description(self):
+        return strip_tags(self.cleaned_data.get('description', '')).strip()
 
 class EducationForm(ModelForm):
     class Meta:

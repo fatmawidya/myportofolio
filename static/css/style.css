@@ -977,6 +977,209 @@ summary.accordion-header::marker { display: none; }
     box-shadow: 2px 2px 0px var(--ink);
 }
 
+/* toast */
+.toast-component {
+    position: fixed;
+    inset: auto 2rem 2rem auto;
+    margin: 0;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 25px rgba(28, 25, 23, 0.15);
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    background-color: var(--paper);
+    border: 1px solid var(--line);
+    color: inherit;
+}
+
+.toast-component:popover-open {
+    display: flex;
+}
+
+.toast-hidden {
+    opacity: 0;
+    transform: translateY(150%);
+    pointer-events: none;
+}
+
+.toast-show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+    font-family: "Space Grotesk", -apple-system, sans-serif;
+}
+
+.toast-message {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Modifikasi border kiri berdasarkan tipe notifikasi */
+.toast-success { border-left: 4px solid #22c55e; }
+.toast-error { border-left: 4px solid #b42318; }
+.toast-normal { border-left: 4px solid var(--accent); }
+
+.hide {
+    display: none !important;
+}
+
+/* Experience Form Modal (Popover API) */
+.experience-form-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 1rem;
+    border: 0;
+    background: transparent;
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+}
+
+.experience-form-modal:popover-open {
+    display: flex;
+}
+
+.experience-form-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0;
+    background: rgba(28, 25, 23, 0.58);
+    cursor: default;
+}
+
+.experience-form-modal__content {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 640px);
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: var(--paper, #ffffff);
+    border: 1px solid var(--line, #ccc);
+    border-radius: var(--radius, 8px);
+    box-shadow: 0 1rem 3rem rgba(28, 25, 23, 0.22);
+}
+
+.experience-form-modal__content h2 {
+    margin: 0 2.5rem 1.25rem 0;
+    font-family: "Space Grotesk", -apple-system, sans-serif;
+    font-size: 1.5rem;
+}
+
+.experience-form-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--text-muted, #666);
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.experience-form-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+    .experience-form-modal {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .experience-form-modal__content {
+        width: 100%;
+        max-height: 90vh;
+        padding: 1.25rem;
+        border-radius: var(--radius, 8px) var(--radius, 8px) 0 0;
+    }
+
+    .experience-form-modal__actions {
+        flex-direction: column-reverse;
+    }
+
+    .experience-form-modal__actions .btn-submit {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Styling Form di dalam Modal */
+.experience-form .form-group {
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+.experience-form label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    color: #1c1917;
+}
+
+/* Custom styling untuk semua input, select, & textarea */
+.experience-form input[type="text"],
+.experience-form input[type="url"],
+.experience-form input[type="date"],
+.experience-form select,
+.experience-form textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #1c1917;
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    box-shadow: 2px 2px 0px #000000;
+    transition: all 0.15s ease-in-out;
+    box-sizing: border-box;
+}
+
+/* Efek saat input diklik / fokus */
+.experience-form input:focus,
+.experience-form select:focus,
+.experience-form textarea:focus {
+    outline: none;
+    border-color: #000000;
+    box-shadow: 4px 4px 0px #000000;
+    background-color: #fffde7;
+}
+
+.experience-form textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+/* Penyesuaian Kotak Modal */
+.experience-form-modal__content {
+    border: 2.5px solid #000000 !important;
+    box-shadow: 6px 6px 0px #000000 !important;
+    border-radius: 12px !important;
+}
+
 
 /* ==========================================
    PENYESUAIAN TAMPILAN HANDPHONE 

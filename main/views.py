@@ -10,6 +10,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required  
 from django.core.exceptions import PermissionDenied       
 import datetime
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 # Helper untuk mengecek apakah user adalah Editor
 def is_editor_user(user):
@@ -79,15 +81,11 @@ def toggle_star(request, experience_id):
 # ================= EXPERIENCE =================
 def show_experience(request):
     search_query = request.GET.get("search", "").strip()
-    experiences = Experience.objects.all().order_by('-started_at')
-    if search_query:
-        experiences = experiences.filter(title__icontains=search_query)
-
     context = {
         "name": "Fatma Widya Rachma",
-        "experience_list": experiences, 
         "search_query": search_query,
-        "is_editor": is_editor_user(request.user), #KIRIM STATUS KE EDITOR
+        "is_editor": is_editor_user(request.user),
+        "form": ExperienceForm(),
     }
     return render(request, "experience.html", context)
 
@@ -146,18 +144,56 @@ def delete_experience(request, id):
 # API Endpoints
 def get_experience_json(request):
     search_query = request.GET.get("search", "").strip()
-    experiences = Experience.objects.all().order_by('-started_at')
-    
+    experiences = Experience.objects.prefetch_related('starred_by').all().order_by('-started_at')
+
     if search_query:
         experiences = experiences.filter(title__icontains=search_query)
         
-    data = serializers.serialize("json", experiences, use_natural_foreign_keys=True)
-    return HttpResponse(data, content_type="application/json")
+    data = []
+    for exp in experiences:
+        starred_users = exp.starred_by.all()
+        is_starred = request.user in starred_users if request.user.is_authenticated else False
+        
+        data.append({
+            "pk": str(exp.id),
+            "fields": {
+                "title": exp.title,
+                "category": exp.category,
+                "category_display": exp.get_category_display() if hasattr(exp, 'get_category_display') else exp.category,
+                "thumbnail": exp.thumbnail if exp.thumbnail else "",
+                "description": exp.description,
+                "is_ongoing": exp.is_ongoing,
+                "started_at": exp.started_at.strftime("%Y") if exp.started_at else "",
+                "ended_at": exp.ended_at.strftime("%Y") if exp.ended_at else None,
+                "star_count": starred_users.count(),
+                "is_starred": is_starred,
+            }
+        })
+        
+    return JsonResponse(data, safe=False)
 
 def get_experience_xml(request):
     experiences = Experience.objects.all()
     data = serializers.serialize("xml", experiences)
     return HttpResponse(data, content_type="application/xml")
+
+@require_POST
+def create_experience_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse(
+            {"message": "Only the portfolio owner can add experiences."},
+            status=403,
+        )
+
+    form = ExperienceForm(request.POST)
+    if form.is_valid():
+        experience = form.save()
+        return JsonResponse(
+            {"message": "Experience added successfully.", "pk": str(experience.id)},
+            status=201,
+        )
+
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
 
 # ================= EDUCATION =================
 def show_education(request):
