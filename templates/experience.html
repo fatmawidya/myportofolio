@@ -1,21 +1,21 @@
-    {% extends 'base.html' %}
-    {% block content %}
-    <main>
-        <section class="accordion-section container" id="experience">
-            <div class="experience-header">
-                <div>
-                    <h1 class="section-title">EXPERIENCE</h1>
-                    <p class="section-subtitle">
-                        A glimpse into my journey so far.
-                    </p>
-                </div>
-                {% if user.is_superuser %}
-                    <button type="button" 
-                            class="btn-submit experience-add-button" 
-                            popovertarget="add-experience-modal">
-                        <span aria-hidden="true">+</span> Add Experience
-                    </button>
-                {% endif %}
+{% extends 'base.html' %}
+{% block content %}
+<main>
+    <section class="accordion-section container" id="experience">
+        <div class="experience-header">
+            <div>
+                <h1 class="section-title">EXPERIENCE</h1>
+                <p class="section-subtitle">
+                    A glimpse into my journey so far.
+                </p>
+            </div>
+            {% if user.is_superuser %}
+                <button type="button" 
+                        class="btn-submit experience-add-button" 
+                        popovertarget="add-experience-modal">
+                    <span aria-hidden="true">+</span> Add Experience
+                </button>
+            {% endif %}
         </div>
 
         <form id="experience-search-form" class="experience-search">
@@ -89,7 +89,6 @@
             .replaceAll("'", '&#39;');
     }
 
-    // Build an experience card element
     function buildExperienceCardElement(item) {
         const exp = item.fields;
         const expId = item.pk;
@@ -98,7 +97,6 @@
         detailsElement.className = 'accordion-card';
         detailsElement.setAttribute('name', 'journey');
 
-        // Escape thumbnail URL & title
         const thumbnailHtml = exp.thumbnail 
             ? `<img src="${escapeHtml(exp.thumbnail)}" alt="${escapeHtml(exp.title)}" class="accordion-thumb-small">` 
             : '';
@@ -117,13 +115,38 @@
         const editUrl = "{% url 'main:edit_experience' '00000000-0000-0000-0000-000000000000' %}"
             .replace('00000000-0000-0000-0000-000000000000', expId);
 
+        const deleteUrl = "{% url 'main:delete_experience' '00000000-0000-0000-0000-000000000000' %}"
+            .replace('00000000-0000-0000-0000-000000000000', expId);
+
+        const starUrl = "{% url 'main:toggle_star' '00000000-0000-0000-0000-000000000000' %}"
+            .replace('00000000-0000-0000-0000-000000000000', expId);
+
+        const isStarredClass = exp.is_starred ? " is-starred" : "";
+        const starText = exp.is_starred ? "Unstar" : "Star";
+        const starTitle = (exp.star_count && exp.star_count > 0) 
+            ? `Dibintangi oleh ${exp.starred_by_names || ''}` 
+            : "Jadilah yang pertama memberi star";
+
+        const starHtml = `
+            <form method="post" action="${starUrl}">
+                {% csrf_token %}
+                <button type="submit" class="button-star${isStarredClass}" title="${escapeHtml(starTitle)}">
+                    ★ ${starText} ${exp.star_count || 0}
+                </button>
+            </form>
+        `;
+
         const editHtml = (IS_SUPERUSER || IS_EDITOR) 
-            ? `<a href="${editUrl}" class="btn-submit">
-                <i class="fa-solid fa-pen"></i> Edit
-               </a>` 
+            ? `<a href="${editUrl}" class="btn-edit">Edit</a>` 
             : '';
 
-        // Escape category, title, dan description
+        const deleteHtml = (IS_SUPERUSER || IS_EDITOR) 
+            ? `<form method="post" action="${deleteUrl}">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger" onclick="return confirm('Yakin ingin menghapus experience ini?');">Delete</button>
+            </form>`
+            : '';
+
         const categoryText = exp.category_display || exp.category;
         const descriptionText = exp.description ? escapeHtml(exp.description).replace(/\n/g, '<br>') : '';
 
@@ -149,7 +172,9 @@
                     <p>${descriptionText}</p>
                 </div>
                 <div class="accordion-actions">
+                    ${starHtml}
                     ${editHtml}
+                    ${deleteHtml}
                 </div>
             </div>
         `;
@@ -219,7 +244,7 @@
         document.getElementById("add-experience-modal").hidePopover();
     }
 
-   // Endpoint & Form Element
+    // Endpoint & Form Element
     const CREATE_EXPERIENCE_ENDPOINT = "{% url 'main:create_experience_ajax' %}";
     const experienceForm = document.getElementById('experience-form');
 

@@ -592,6 +592,67 @@ summary.accordion-header::marker { display: none; }
 }
 
 
+.accordion-section {
+    padding-top: 3.5rem;
+}
+
+.accordion-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.accordion-actions form {
+    margin: 0;
+    display: inline-flex;
+}
+
+.accordion-actions .btn-submit,
+.accordion-actions .btn-edit,
+.accordion-actions .btn-danger,
+.accordion-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    height: 38px;
+    padding: 0 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-sizing: border-box;
+    text-decoration: none;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background-color: #facc15;
+    color: #000;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0 #000;
+    border-radius: 6px;
+}
+
+.btn-danger {
+    background-color: #ef4444;
+    color: #fff;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0 #000;
+    border-radius: 6px;
+}
+
+.button-star {
+    background-color: #1e293b;
+    color: #fff;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0 #000;
+    border-radius: 6px;
+}
+
+
 /* ==========================================
    DELETE MODAL
    ========================================== */
@@ -864,6 +925,15 @@ summary.accordion-header::marker { display: none; }
     display: flex;
     gap: 1rem;
     align-items: flex-start;
+    position: relative;
+}
+
+.timeline-card .badge {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    white-space: nowrap;
+    z-index: 2;
 }
 
 .timeline-card:hover {
@@ -910,6 +980,8 @@ summary.accordion-header::marker { display: none; }
     font-weight: 800;
     color: var(--ink);
     line-height: 1.3;
+    padding-right: 5.5rem;
+    word-break: break-word;
 }
 
 .timeline-subtitle {
