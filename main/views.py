@@ -6,12 +6,12 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required  
 from django.core.exceptions import PermissionDenied       
 import datetime
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.db.models import Q
 
 # Helper untuk mengecek apakah user adalah Editor
 def is_editor_user(user):
@@ -199,8 +199,9 @@ def create_experience_ajax(request):
 def show_education(request):
     context = {
         "name": "Fatma Widya Rachma",
-        "education_list": Education.objects.all().order_by('-start_year'),
         "is_editor": is_editor_user(request.user),
+        "search_query": request.GET.get("search", ""),
+        "form": EducationForm(),
     }
     return render(request, "educational.html", context)
 
@@ -255,3 +256,51 @@ def delete_education(request, id):
         messages.success(request, "Education deleted successfully!")
         return redirect("main:show_education")
     return redirect("main:show_education")
+
+def get_education_json(request):
+    query = request.GET.get("search", "").strip()
+    educations = Education.objects.all()
+
+    if query:
+        educations = educations.filter(
+        Q(institution__icontains=query) |
+        Q(field_of_study__icontains=query) |
+        Q(degree__icontains=query)
+    ).distinct()
+
+    data = []
+    for edu in educations:
+        data.append({
+            "pk": str(edu.id),
+            "fields": {
+                "institution": edu.institution,
+                "degree": edu.degree,
+                "degree_display": edu.get_degree_display() if hasattr(edu, 'get_degree_display') else edu.degree,
+                "field_of_study": edu.field_of_study,
+                "start_year": edu.start_year,
+                "end_year": edu.end_year,
+                "is_current": edu.is_current,
+                "description": edu.description,
+                "thumbnail": edu.thumbnail if hasattr(edu, 'thumbnail') else '',
+            }
+        })
+    return JsonResponse(data, safe=False)
+
+
+@require_POST
+def create_education_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse(
+            {"message": "Only the portfolio owner can add education."},
+            status=403,
+        )
+
+    form = EducationForm(request.POST)
+    if form.is_valid():
+        education = form.save()
+        return JsonResponse(
+            {"message": "Education added successfully.", "pk": str(education.id)},
+            status=201,
+        )
+
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)

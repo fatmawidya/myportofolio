@@ -782,6 +782,7 @@ summary.accordion-header::marker { display: none; }
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .form-label {
@@ -1213,6 +1214,7 @@ summary.accordion-header::marker { display: none; }
 
 /* Custom styling untuk semua input, select, & textarea */
 .experience-form input[type="text"],
+.experience-form input[type="number"],
 .experience-form input[type="url"],
 .experience-form input[type="date"],
 .experience-form select,

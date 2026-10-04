@@ -124,8 +124,8 @@
         const isStarredClass = exp.is_starred ? " is-starred" : "";
         const starText = exp.is_starred ? "Unstar" : "Star";
         const starTitle = (exp.star_count && exp.star_count > 0) 
-            ? `Dibintangi oleh ${exp.starred_by_names || ''}` 
-            : "Jadilah yang pertama memberi star";
+            ? `Starred by ${exp.starred_by_names || ''}` 
+            : "Be the first to star";
 
         const starHtml = `
             <form method="post" action="${starUrl}">
@@ -143,7 +143,7 @@
         const deleteHtml = (IS_SUPERUSER || IS_EDITOR) 
             ? `<form method="post" action="${deleteUrl}">
                 {% csrf_token %}
-                <button type="submit" class="btn-danger" onclick="return confirm('Yakin ingin menghapus experience ini?');">Delete</button>
+                <button type="submit" class="btn-danger" onclick="return confirm('Are you sure you want to delete this experience?');">Delete</button>
             </form>`
             : '';
 

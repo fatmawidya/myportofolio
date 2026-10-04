@@ -2,7 +2,7 @@
 {% block content %}
 <main>
     <section class="accordion-section container" id="education">
-        <!-- Header Education -->
+        <!-- Education Header -->
         <div class="experience-header">
             <div>
                 <h1 class="section-title">EDUCATION</h1>
@@ -11,96 +11,284 @@
                 </p>
             </div>
             {% if user.is_superuser %}
-                <a href="{% url 'main:create_education' %}" class="btn-submit">+ Add Education</a>
+                <button type="button" 
+                        class="btn-submit" 
+                        popovertarget="add-education-modal">
+                    <span aria-hidden="true">+</span> Add Education
+                </button>
             {% endif %}
         </div>
 
-        <!-- Search Bar-->
-        <div class="experience-search">
-            <input 
-                type="text" 
-                id="searchEducation" 
-                placeholder="Search education by school, degree, or major..." 
-                onkeyup="filterEducation()"
-                class="experience-search__input"
-            />
-            <button type="button" onclick="filterEducation()" class="btn-submit">Search</button>
+        <!-- Search Bar -->
+        <form id="education-search-form" class="experience-search">
+            <input type="search" 
+                   id="searchEducation"
+                   name="search" 
+                   placeholder="Search education by school, degree, or major..." 
+                   class="experience-search__input"
+                   aria-label="Search education">
+            <button type="submit" class="btn-submit">Search</button>
+        </form>
+
+        <!-- Loading State -->
+        <div id="loading" class="empty-state hide">
+            <p>Loading educations...</p>
         </div>
 
-        <!-- Timeline Section -->
-        <div class="timeline-container" id="educationList">
-            {% for edu in education_list %}
-                <div class="timeline-item {% if forloop.counter0|divisibleby:2 %}left{% else %}right{% endif %}">
-                    <div class="timeline-card">
-                        {% if edu.is_current %}
-                            <span class="badge badge-ongoing">Active</span>
-                        {% else %}
-                            <span class="badge badge-finished">Graduated</span>
-                        {% endif %}
-                        
-                        <div class="timeline-logo">
-                            {% if edu.thumbnail %}
-                                <img src="{{ edu.thumbnail }}" alt="{{ edu.institution }}">
-                            {% else %}
-                                <span>{{ edu.institution|slice:":1" }}</span>
-                            {% endif %}
-                        </div>
-
-                        <div class="timeline-content">
-                            <h3 class="timeline-title">{{ edu.institution }}</h3>
-                            <p class="timeline-subtitle">
-                                {{ edu.get_degree_display }}{% if edu.field_of_study %} &bull; {{ edu.field_of_study }}{% endif %}
-                            </p>
-                            <p class="timeline-date">
-                                {{ edu.start_year }} &ndash; {% if edu.end_year %}{{ edu.end_year }}{% else %}Present{% endif %}
-                            </p>
-                            {% if edu.description %}
-                                <p class="timeline-desc">{{ edu.description }}</p>
-                            {% endif %}
-
-                            <!-- Tombol Edit & Delete -->
-                            <div class="accordion-actions">
-                                {% if user.is_superuser or is_editor %}
-                                    <a href="{% url 'main:edit_education' edu.id %}" class="btn-edit" onclick="event.stopPropagation()">Edit</a>
-                                {% endif %}
-                                <div onclick="event.stopPropagation()">
-                                    {% if user.is_superuser %}
-                                        {% include "components/education_delete_model.html" with education=edu %}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% empty %}
-                <p class="empty-state">
-                    No education has been added yet.
-                </p>
-            {% endfor %}
+        <!-- Error State -->
+        <div id="error" class="empty-state hide">
+            <p>Failed to load education data. Please try again.</p>
         </div>
+
+        <!-- Empty State -->
+        <div id="empty" class="empty-state hide">
+            <p>No educations have been added or found yet.</p>
+        </div>
+
+        <!-- Timeline List Container -->
+        <div class="timeline-container hide" id="educationList"></div>
     </section>
 </main>
 
+{% if user.is_superuser %}
+    {% include "components/education_form_modal.html" %}
+{% endif %}
+
 <script>
-function toggleGlow(card) {
-    document.querySelectorAll('.timeline-card').forEach(c => {
-        if (c !== card) c.classList.remove('active');
-    });
-    card.classList.toggle('active');
-}
+    // Configuration & Endpoints
+    const BASE_EDUCATION_ENDPOINT = "{% url 'main:get_education_json' %}";
+    const CREATE_EDUCATION_ENDPOINT = "{% url 'main:create_education_ajax' %}";
+    const IS_SUPERUSER = "{{ user.is_superuser|yesno:'true,false' }}" === "true";
+    const IS_EDITOR = "{{ is_editor|yesno:'true,false' }}" === "true";
+    
+    let educationsAbortController;
+    const SEARCH_DEBOUNCE_DELAY = 300;
+    let searchDebounceTimer;
 
-function filterEducation() {
-    const input = document.getElementById('searchEducation').value.toLowerCase();
-    const items = document.querySelectorAll('#educationList .timeline-item');
+    // DOM elements
+    const loadingState = document.getElementById('loading');
+    const errorState = document.getElementById('error');
+    const emptyState = document.getElementById('empty');
+    const listContainer = document.getElementById('educationList');
+    const searchForm = document.getElementById('education-search-form');
+    const searchInput = document.getElementById('searchEducation');
+    const educationForm = document.getElementById('education-form');
 
-    items.forEach(item => {
-        const text = item.innerText.toLowerCase();
-        if (text.includes(input)) {
-            item.style.display = "";
-        } else {
-            item.style.display = "none";
+    // Helper: Toggle Tampilan State Halaman
+    function displayPageSection({ showLoading = false, showError = false, showEmpty = false, showList = false }) {
+        loadingState.classList.toggle('hide', !showLoading);
+        errorState.classList.toggle('hide', !showError);
+        emptyState.classList.toggle('hide', !showEmpty);
+        listContainer.classList.toggle('hide', !showList);
+    }
+
+    // Helper: Sanitasi HTML
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
+    }
+
+    // Helper: Ambil Cookie CSRF
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
         }
+        return cookieValue;
+    }
+
+    function toggleGlow(card) {
+        document.querySelectorAll('.timeline-card').forEach(c => {
+            if (c !== card) c.classList.remove('active');
+        });
+        card.classList.toggle('active');
+    }
+
+    // Render Timeline Card
+    function buildEducationCardElement(item, index) {
+        const edu = item.fields;
+        const eduId = item.pk;
+        const sideClass = (index % 2 === 0) ? 'left' : 'right';
+
+        const statusBadge = edu.is_current 
+            ? `<span class="badge badge-ongoing">Active</span>`
+            : `<span class="badge badge-finished">Graduated</span>`;
+
+        const logoHtml = edu.thumbnail 
+            ? `<img src="${escapeHtml(edu.thumbnail)}" alt="${escapeHtml(edu.institution)}">` 
+            : `<span>${escapeHtml(edu.institution.charAt(0))}</span>`;
+
+        const startYear = escapeHtml(edu.start_year);
+        const endYear = edu.end_year ? escapeHtml(edu.end_year) : 'Present';
+        const dateRange = `${startYear} &ndash; ${endYear}`;
+
+        const degreeText = edu.field_of_study 
+            ? `${escapeHtml(edu.degree_display)} &bull; ${escapeHtml(edu.field_of_study)}` 
+            : escapeHtml(edu.degree_display);
+
+        const editUrl = "{% url 'main:edit_education' '00000000-0000-0000-0000-000000000000' %}"
+            .replace('00000000-0000-0000-0000-000000000000', eduId);
+
+        const deleteUrl = "{% url 'main:delete_education' '00000000-0000-0000-0000-000000000000' %}"
+            .replace('00000000-0000-0000-0000-000000000000', eduId);
+
+        const editHtml = (IS_SUPERUSER || IS_EDITOR) 
+            ? `<a href="${editUrl}" class="btn-edit" onclick="event.stopPropagation()">Edit</a>` 
+            : '';
+
+        const deleteHtml = IS_SUPERUSER 
+            ? `<form method="post" action="${deleteUrl}" style="display:inline;" onclick="event.stopPropagation()">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger" onclick="return confirm('Are you sure you want to delete this education entry?');">Delete</button>
+            </form>`
+            : '';
+
+        const descriptionHtml = edu.description 
+            ? `<p class="timeline-desc">${escapeHtml(edu.description).replace(/\n/g, '<br>')}</p>` 
+            : '';
+
+        const timelineItem = document.createElement('div');
+        timelineItem.className = `timeline-item ${sideClass}`;
+        timelineItem.innerHTML = `
+            <div class="timeline-card" onclick="toggleGlow(this)">
+                ${statusBadge}
+                <div class="timeline-logo">${logoHtml}</div>
+                <div class="timeline-content">
+                    <h3 class="timeline-title">${escapeHtml(edu.institution)}</h3>
+                    <p class="timeline-subtitle">${degreeText}</p>
+                    <p class="timeline-date">${dateRange}</p>
+                    ${descriptionHtml}
+                    ${(editHtml || deleteHtml) ? `
+                        <div class="accordion-actions">
+                            ${editHtml}${deleteHtml}
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+        return timelineItem;
+    }
+
+    // Fetch data education dengan AbortController
+    async function fetchEducations(query = "") {
+        if (educationsAbortController) educationsAbortController.abort();
+        educationsAbortController = new AbortController();
+
+        try {
+            displayPageSection({ showLoading: true });
+
+            const url = query ? `${BASE_EDUCATION_ENDPOINT}?search=${encodeURIComponent(query)}` : BASE_EDUCATION_ENDPOINT;
+            const res = await fetch(url, { 
+                headers: { 'Accept': 'application/json' },
+                signal: educationsAbortController.signal
+            });
+            
+            if (!res.ok) throw new Error('Failed to fetch data');
+
+            const data = await res.json();
+
+            if (data.length === 0) {
+                displayPageSection({ showEmpty: true });
+            } else {
+                listContainer.innerHTML = '';
+                data.forEach((item, index) => {
+                    listContainer.appendChild(buildEducationCardElement(item, index));
+                });
+                displayPageSection({ showList: true });
+            }
+        } catch (e) {
+            if (e.name === 'AbortError') return;
+            console.error('Error loading educations:', e);
+            displayPageSection({ showError: true });
+        }
+    }
+
+    // Fungsi helper pencarian
+    function searchEducations() {
+        fetchEducations(searchInput.value.trim());
+    }
+
+    // Event Input (Debounced)
+    searchInput.addEventListener('input', () => {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(searchEducations, SEARCH_DEBOUNCE_DELAY);
     });
-}
+
+    // Event Submit Search
+    searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        clearTimeout(searchDebounceTimer);
+        searchEducations();
+    });
+
+    // Close Modal Function
+    function closeEducationModal() {
+        const modal = document.getElementById("add-education-modal");
+        if (modal) modal.hidePopover();
+    }
+
+    // Submit AJAX Form (Struktur identik dengan Experience)
+    async function addEducation(event) {
+        event.preventDefault();
+        const submitButton = educationForm.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+
+        try {
+            const response = await fetch(CREATE_EDUCATION_ENDPOINT, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                body: new FormData(educationForm),
+            });
+
+            const result = await response.json().catch(() => ({}));
+
+            if (response.ok) {
+                educationForm.reset();
+                closeEducationModal();
+                if (typeof showToast === 'function') {
+                    showToast('Success', 'New education added successfully!', 'success');
+                }
+                fetchEducations(searchInput.value.trim());
+            } else {
+                // Parsing error persis seperti Experience
+                const errorMessages = result.errors
+                    ? Object.values(result.errors).flat().map(error => (typeof error === 'object' ? error.message : error))
+                    : [result.message || `Something went wrong (status ${response.status}).`];
+
+                if (typeof showToast === 'function') {
+                    showToast('Failed to add education', errorMessages.join(' '), 'error');
+                } else {
+                    alert(errorMessages.join(' '));
+                }
+            }
+        } catch (error) {
+            console.error('Error adding education:', error);
+            if (typeof showToast === 'function') {
+                showToast('Failed to add education', 'Could not reach the server. Please try again.', 'error');
+            } else {
+                alert('Could not reach the server. Please try again.');
+            }
+        } finally {
+            submitButton.disabled = false;
+        }
+    }
+
+    if (educationForm) {
+        educationForm.addEventListener('submit', addEducation);
+    }
+
+    // Initial load
+    fetchEducations(searchInput.value.trim());
 </script>
 {% endblock content %}

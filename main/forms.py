@@ -71,3 +71,15 @@ class EducationForm(ModelForm):
                 'placeholder': 'What did you study? Any notable achievements or organizations?'
             }),
         }
+
+    def clean_institution(self):
+        institution = strip_tags(self.cleaned_data.get('institution', '')).strip()
+        if not institution:
+            raise ValidationError('Institution name cannot contain only HTML tags.')
+        return institution
+
+    def clean_field_of_study(self):
+        return strip_tags(self.cleaned_data.get("field_of_study", "")).strip()
+
+    def clean_description(self):
+        return strip_tags(self.cleaned_data.get('description', '')).strip()
