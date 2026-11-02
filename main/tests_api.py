@@ -65,6 +65,27 @@ class PortfolioAPITest(APITestCase):
             self.assertEqual(self.objects[kind].description, 'Edited')
             self.assertEqual(self.client.put(self.url(kind, 'detail'), self.payloads[kind], format='json').status_code, 200)
 
+    def test_staff_without_editor_role_cannot_manage_data(self):
+        self.reader.is_staff = True
+        self.reader.save()
+        self.client.force_authenticate(self.reader)
+        for kind, model in self.models.items():
+            self.assertEqual(self.client.post(self.url(kind), self.payloads[kind], format='json').status_code, 403)
+            self.assertEqual(self.client.patch(self.url(kind, 'detail'), {'description': 'Forbidden'}, format='json').status_code, 403)
+            self.assertEqual(self.client.delete(self.url(kind, 'detail')).status_code, 403)
+            self.objects[kind].refresh_from_db()
+            self.assertEqual(self.objects[kind].description, self.payloads[kind]['description'])
+            self.assertEqual(model.objects.count(), 1)
+
+    def test_editor_legacy_views_and_buttons_match_api_permissions(self):
+        self.client.force_login(self.editor)
+        for kind in self.models:
+            edit_url = reverse(f'main:edit_{kind}', args=[self.objects[kind].pk])
+            self.assertEqual(self.client.get(edit_url).status_code, 200)
+            page = self.client.get(reverse(f'main:show_{kind}'))
+            self.assertContains(page, 'const editHtml = (IS_SUPERUSER || IS_EDITOR)')
+            self.assertContains(page, 'const deleteHtml = IS_SUPERUSER')
+
     def test_owner_create_put_patch_delete_and_readonly_fields(self):
         self.client.force_authenticate(self.owner)
         for kind, model in self.models.items():
