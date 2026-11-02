@@ -3,7 +3,9 @@
 {% block content %}
 <main class="container form-section">
     <h1 class="section-title">{% if education %}Edit{% else %}Add{% endif %} Education</h1>
-    <form method="post" class="form-container">
+    <form method="post" class="form-container" id="record-form"
+          data-api-url="{% if education %}{% url 'api:education-detail' education.pk %}{% else %}{% url 'api:education-list' %}{% endif %}"
+          data-edit="{% if education %}true{% else %}false{% endif %}">
         {% csrf_token %}
         {{ form.non_field_errors }}
         {% for field in form %}
@@ -11,7 +13,7 @@
             <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
             {{ field }}
             {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
-            <div class="form-error">{{ field.errors }}</div>
+            <div class="form-error" data-error="{{ field.name }}">{{ field.errors }}</div>
         </div>
         {% endfor %}
         <div class="form-actions">
@@ -20,4 +22,67 @@
         </div>
     </form>
 </main>
+<script>
+    function getCookie(name) {
+        const prefix = `${name}=`;
+        const cookie = document.cookie.split(';').map(value => value.trim())
+            .find(value => value.startsWith(prefix));
+        return cookie ? decodeURIComponent(cookie.slice(prefix.length)) : null;
+    }
+
+    function apiErrorMessage(data, status) {
+        const messages = Object.values(data).flat().filter(value => typeof value === 'string');
+        return messages.join(' ') || `Request failed (HTTP ${status}).`;
+    }
+
+    async function writeEducation(url, method, payload) {
+        const response = await fetch(url, {
+            method,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: payload === undefined ? undefined : JSON.stringify(payload),
+        });
+        if (response.status === 204) return null;
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            const error = new Error(apiErrorMessage(data, response.status));
+            error.fields = data;
+            throw error;
+        }
+        return data;
+    }
+
+    const educationForm = document.getElementById('record-form');
+    educationForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const button = educationForm.querySelector('button[type="submit"]');
+        button.disabled = true;
+        educationForm.querySelectorAll('[data-error]').forEach(node => { node.textContent = ''; });
+        const fields = new FormData(educationForm);
+        const payload = Object.fromEntries([
+            'institution', 'degree', 'field_of_study', 'start_year', 'end_year', 'thumbnail', 'description',
+        ].map(name => [name, fields.get(name)]));
+        payload.end_year ||= null;
+        try {
+            const data = await writeEducation(educationForm.dataset.apiUrl,
+                educationForm.dataset.edit === 'true' ? 'PATCH' : 'POST', payload);
+            if (educationForm.dataset.edit !== 'true') {
+                educationForm.dataset.apiUrl += `${data.id}/`;
+                educationForm.dataset.edit = 'true';
+            }
+            showToast('Saved', 'Changes saved successfully.', 'success');
+        } catch (error) {
+            educationForm.querySelectorAll('[data-error]').forEach(node => {
+                const errors = error.fields?.[node.dataset.error];
+                node.textContent = Array.isArray(errors) ? errors.join(' ') : '';
+            });
+            showToast('Save failed', error.message, 'error');
+        } finally {
+            button.disabled = false;
+        }
+    });
+</script>
 {% endblock %}
