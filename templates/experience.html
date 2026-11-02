@@ -156,15 +156,15 @@
             .replace('00000000-0000-0000-0000-000000000000', expId);
 
         const starHtml = IS_AUTHENTICATED
-            ? `<button type="button" class="btn-edit" data-action="star" data-id="${escapeHtml(expId)}" aria-pressed="${exp.is_starred}">${exp.is_starred ? 'Unstar' : 'Star'} (${exp.star_count})</button>`
-            : `<a class="btn-edit" href="{% url 'main:login' %}">Login to star (${exp.star_count})</a>`;
+            ? `<button type="button" class="btn-edit" data-tooltip="${exp.is_starred ? 'Remove your star' : 'Give a star'}" data-action="star" data-id="${escapeHtml(expId)}" aria-pressed="${exp.is_starred}"><span aria-hidden="true">${exp.is_starred ? '&#9733;' : '&#9734;'}</span> ${exp.is_starred ? 'Unstar' : 'Star'} (${exp.star_count})</button>`
+            : `<a class="btn-edit" data-tooltip="Log in to give a star" href="{% url 'main:login' %}"><span aria-hidden="true">&#9734;</span> Login to star (${exp.star_count})</a>`;
 
         const editHtml = (IS_SUPERUSER || IS_EDITOR) 
-            ? `<a href="${editUrl}" class="btn-edit">Edit</a>` 
+            ? `<a href="${editUrl}" class="btn-edit" data-tooltip="Edit this experience">Edit</a>`
             : '';
 
         const deleteHtml = IS_SUPERUSER
-            ? `<button type="button" class="btn-danger" data-action="delete" data-id="${escapeHtml(expId)}">Delete</button>` : '';
+            ? `<button type="button" class="btn-danger" data-tooltip="Delete this experience" data-action="delete" data-id="${escapeHtml(expId)}">Delete</button>` : '';
 
         const categoryText = exp.category_display || exp.category;
         const descriptionText = exp.description ? escapeHtml(exp.description).replace(/\n/g, '<br>') : '';

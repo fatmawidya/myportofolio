@@ -585,10 +585,65 @@ summary.accordion-header::marker { display: none; }
 
 .btn-submit:hover,
 .btn-cancel:hover,
+.btn-edit:not(:disabled):hover,
+.btn-edit:focus-visible,
 .btn-danger:hover,
 .btn-delete:hover {
     transform: translate(-2px, -2px);
     box-shadow: 5px 5px 0px var(--ink);
+}
+
+.btn-edit:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 4px;
+}
+
+.btn-edit:not(:disabled):active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px var(--ink);
+}
+
+.btn-edit:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.btn-edit[data-tooltip],
+.btn-danger[data-tooltip] {
+    position: relative;
+}
+
+.btn-edit[data-tooltip]::after,
+.btn-danger[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    z-index: 10;
+    width: max-content;
+    max-width: 180px;
+    padding: 0.45rem 0.65rem;
+    border-radius: 4px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    text-align: center;
+    white-space: normal;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.btn-edit[data-tooltip]:not(:disabled):hover::after,
+.btn-edit[data-tooltip]:focus-visible::after,
+.btn-danger[data-tooltip]:not(:disabled):hover::after,
+.btn-danger[data-tooltip]:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 

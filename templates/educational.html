@@ -165,15 +165,15 @@
             .replace('00000000-0000-0000-0000-000000000000', eduId);
 
         const editHtml = (IS_SUPERUSER || IS_EDITOR) 
-            ? `<a href="${editUrl}" class="btn-edit" onclick="event.stopPropagation()">Edit</a>` 
+            ? `<a href="${editUrl}" class="btn-edit" data-tooltip="Edit this education" onclick="event.stopPropagation()">Edit</a>`
             : '';
 
         const deleteHtml = IS_SUPERUSER
-            ? `<button type="button" class="btn-danger" data-action="delete" data-id="${escapeHtml(eduId)}">Delete</button>` : '';
+            ? `<button type="button" class="btn-danger" data-tooltip="Delete this education" data-action="delete" data-id="${escapeHtml(eduId)}">Delete</button>` : '';
 
         const starHtml = IS_AUTHENTICATED
-            ? `<button type="button" class="btn-edit" data-action="star" data-id="${escapeHtml(eduId)}" aria-pressed="${edu.is_starred}">${edu.is_starred ? 'Unstar' : 'Star'} (${edu.star_count})</button>`
-            : `<a class="btn-edit" href="{% url 'main:login' %}">Login to star (${edu.star_count})</a>`;
+            ? `<button type="button" class="btn-edit" data-tooltip="${edu.is_starred ? 'Remove your star' : 'Give a star'}" data-action="star" data-id="${escapeHtml(eduId)}" aria-pressed="${edu.is_starred}"><span aria-hidden="true">${edu.is_starred ? '&#9733;' : '&#9734;'}</span> ${edu.is_starred ? 'Unstar' : 'Star'} (${edu.star_count})</button>`
+            : `<a class="btn-edit" data-tooltip="Log in to give a star" href="{% url 'main:login' %}"><span aria-hidden="true">&#9734;</span> Login to star (${edu.star_count})</a>`;
 
         const descriptionHtml = edu.description 
             ? `<p class="timeline-desc">${escapeHtml(edu.description).replace(/\n/g, '<br>')}</p>` 
