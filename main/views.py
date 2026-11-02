@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied       
 import datetime
 from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 from django.db.models import Q
 
@@ -79,6 +80,7 @@ def toggle_star(request, experience_id):
     return redirect("main:show_experience")
 
 # ================= EXPERIENCE =================
+@ensure_csrf_cookie
 def show_experience(request):
     search_query = request.GET.get("search", "").strip()
     context = {
@@ -196,6 +198,7 @@ def create_experience_ajax(request):
     return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
 
 # ================= EDUCATION =================
+@ensure_csrf_cookie
 def show_education(request):
     context = {
         "name": "Fatma Widya Rachma",

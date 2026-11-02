@@ -45,8 +45,8 @@ class MainTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "experience.html")
-        self.assertContains(response, reverse("main:get_experience_json"))
-        data = self.client.get(reverse("main:get_experience_json")).json()[0]["fields"]
+        self.assertContains(response, reverse("api:experience-list"))
+        data = self.client.get(reverse("api:experience-list")).json()[0]
         self.assertEqual(data["title"], self.experience.title)
         self.assertEqual(data["description"], self.experience.description)
         self.assertEqual(data["category_display"], "Volunteer")
@@ -62,7 +62,7 @@ class MainTest(TestCase):
         response = self.client.get(reverse("main:show_experience"))
 
         self.assertContains(response, "No experiences have been added or found yet.")
-        self.assertEqual(self.client.get(reverse("main:get_experience_json")).json(), [])
+        self.assertEqual(self.client.get(reverse("api:experience-list")).json(), [])
 
     # --- TEST EDUCATION ---
     def test_education_model(self):
@@ -77,8 +77,8 @@ class MainTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "educational.html")
-        self.assertContains(response, reverse("main:get_education_json"))
-        data = self.client.get(reverse("main:get_education_json")).json()[0]["fields"]
+        self.assertContains(response, reverse("api:education-list"))
+        data = self.client.get(reverse("api:education-list")).json()[0]
         self.assertEqual(data["institution"], self.education.institution)
         self.assertEqual(data["field_of_study"], self.education.field_of_study)
         self.assertEqual(data["start_year"], 2025)
@@ -90,4 +90,4 @@ class MainTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "educational.html")
         self.assertContains(response, "No educations have been added or found yet.")
-        self.assertEqual(self.client.get(reverse("main:get_education_json")).json(), [])
+        self.assertEqual(self.client.get(reverse("api:education-list")).json(), [])
