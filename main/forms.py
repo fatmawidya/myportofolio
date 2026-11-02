@@ -23,10 +23,10 @@ class ExperienceForm(ModelForm):
             'thumbnail': URLInput(attrs={
                 'placeholder': 'https://example.com/logo.png (Optional)',
             }),
-            'started_at': DateInput(attrs={
+            'started_at': DateInput(format="%Y-%m-%d", attrs={
                 'type': 'date',
             }),
-            'ended_at': DateInput(attrs={
+            'ended_at': DateInput(format="%Y-%m-%d", attrs={
                 'type': 'date',
             }),
             'description': Textarea(attrs={

@@ -145,30 +145,13 @@ Aplikasi portofolio ini telah di-deploy dan dapat diakses secara langsung melalu
 
 ---
 
-### Tugas 5
-
-1. **Jelaskan apa itu debouncing dan mengapa teknik ini penting diterapkan pada fitur pencarian yang menggunakan AJAX!**  
-   *Jawaban:*  
-   Debouncing adalah teknik optimasi yang menunda eksekusi suatu fungsi hingga durasi waktu tertentu (misalnya 300ms) berlalu tanpa adanya pemicuan (*event*) baru dari pengguna.  
-   Pada fitur pencarian berbasis AJAX, debouncing sangat penting karena tanpa teknik ini, setiap kali pengguna mengetik satu karakter di kolom pencarian, browser akan langsung mengirimkan HTTP request ke server. Jika pengguna mengetik kata yang panjang secara cepat, puluhan request akan terkirim secara berurutan. Hal ini menyebabkan lonjakan beban server, pemborosan bandwidth, serta risiko *race condition* (di mana respon dari request lama tiba belakangan dan menimpa data terbaru). Dengan debouncing, request AJAX hanya terkirim satu kali setelah pengguna berhenti mengetik sejenak.
-
-2. **Jelaskan fungsi dari penggunaan `await` ketika kita menggunakan `fetch()`! Apa yang akan terjadi jika kita tidak menggunakan `await`?**  
-   *Jawaban:*  
-   Fungsi `await` adalah menunda eksekusi baris kode berikutnya di dalam `async function` sampai proses asinkron dari `fetch()` selesai (*resolved*) dan mengembalikan objek `Response` atau data JSON yang siap digunakan.  
-   Jika tidak menggunakan `await`, eksekusi kode JavaScript akan terus berjalan secara sinkron tanpa menunggu respon dari server. Variabel penampung hanya akan berisi objek `Promise <pending>`, bukan data asli dari server. Ketika kode berikutnya mencoba membaca data tersebut (seperti melakukan `.json()` atau mengiterasi array data), akan terjadi *runtime error* (misalnya `TypeError: Cannot read properties of undefined`).
-
-3. **Jelaskan apa itu serangan XSS (Cross-Site Scripting) dan mengapa data yang ditampilkan melalui AJAX/JavaScript lebih rentan terhadap serangan ini daripada data yang ditampilkan langsung melalui template Django!**  
-   *Jawaban:*  
-   XSS (Cross-Site Scripting) adalah celah keamanan web di mana penyerang berhasil menyisipkan skrip berbahaya (seperti kode JavaScript atau atribut HTML `onerror`) ke dalam basis data aplikasi, yang kemudian dieksekusi oleh peramban pengguna lain saat mengakses halaman web tersebut.  
-   Data yang ditampilkan melalui AJAX/JavaScript lebih rentan karena saat kita menyisipkan data hasil Fetch API ke dalam DOM menggunakan JavaScript (seperti melalui `innerHTML` atau *template literals*), browser menafsirkan string tersebut secara langsung sebagai elemen HTML tanpa sanitasi otomatis. Sebaliknya, mesin template bawaan Django (`{{ variable }}`) secara otomatis menerapkan *auto-escaping* pada karakter-karakter khusus HTML (`<`, `>`, `"`, `'`, `&`), sehingga skrip jahat secara otomatis dikonversi menjadi teks biasa yang aman.
-
----
-
 ## 🤖 AI Disclosure
 
-Pada pengerjaan Tugas 5 ini, Gemini AI digunakan sebagai alat bantu (*tool*) untuk:
-1. Membantu melakukan pengujian (*debugging*) alur AJAX POST, penanganan status HTTP (201, 400, 403), dan validasi token CSRF.
-2. Membimbing struktur penulisan fungsi sanitasi XSS (`escapeHtml` di frontend dan `strip_tags` di backend).
-3. Merapikan format tata bahasa serta menyusun dokumentasi README dan jawaban pertanyaan reflektif Tugas 5 secara terstruktur.
+Pada revisi perbaikan feedback Tugas 1–3 ini, ChatGPT digunakan sebagai alat bantu untuk:
 
-Seluruh logika utama Django, struktur berkas HTML/CSS, konfigurasi endpoint API, dan eksekusi pengujian fitur dikerjakan dan diverifikasi secara mandiri.
+1. Meninjau feedback tentang deskripsi proyek, instruksi setup, alur data JSON, dan penempatan template.
+2. Membantu menyatukan halaman tambah/edit menjadi satu template per model dan memperbaiki format tanggal pada input edit.
+3. Membantu menyesuaikan tes lama dengan pemuatan data AJAX serta meninjau tombol Delete agar sesuai izin superuser.
+4. Membantu merapikan dokumentasi dan menyiapkan urutan pengerjaan berikutnya.
+
+Bantuan AI mencakup perubahan kode dan pengujian otomatis. Pengujian lokal tidak menggantikan pemeriksaan manual tampilan maupun deployment PWS oleh pemilik. Jawaban Tugas 6 akan ditambahkan pada tahap dokumentasi tugas tersebut.

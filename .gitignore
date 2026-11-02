@@ -120,3 +120,6 @@ sftp-config.json
 
 # macOS
 .DS_Store
+
+# Local work-in-progress backups (never commit)
+tmp/

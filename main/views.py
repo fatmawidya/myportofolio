@@ -105,7 +105,7 @@ def create_experience(request):
         'form': form,
         'name': 'Fatma Widya Rachma', 
     }
-    return render(request, "create_experience.html", context)
+    return render(request, "experience_form.html", context)
 
 @login_required(login_url="/login/")
 def edit_experience(request, id):
@@ -126,7 +126,7 @@ def edit_experience(request, id):
         'name': 'Fatma Widya Rachma', 
         'experience': experience, 
     }
-    return render(request, "components/edit_experience.html", context)
+    return render(request, "experience_form.html", context)
 
 @login_required(login_url="/login/")
 def delete_experience(request, id):
@@ -221,7 +221,7 @@ def create_education(request):
         'form': form,
         'name': 'Fatma Widya Rachma', 
     }
-    return render(request, "create_education.html", context)
+    return render(request, "education_form.html", context)
 
 @login_required(login_url="/login/")
 def edit_education(request, id):
@@ -242,7 +242,7 @@ def edit_education(request, id):
         'name': 'Fatma Widya Rachma', 
         'education': education, 
     }
-    return render(request, "components/edit_education.html", context)
+    return render(request, "education_form.html", context)
 
 @login_required(login_url="/login/")
 def delete_education(request, id):

@@ -10,7 +10,7 @@ class MainTest(TestCase):
             title="Open House Fasilkom UI 2024",
             description="Staff of Public Relations and Event Host.",
             category="volunteer", 
-            started_at=timezone.now().date()
+            started_at=timezone.now()
         )
         # Data dummy Education 
         self.education = Education.objects.create(
@@ -45,9 +45,11 @@ class MainTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "experience.html")
-        self.assertContains(response, self.experience.title)
-        self.assertContains(response, self.experience.description)
-        self.assertContains(response, "Volunteer")
+        self.assertContains(response, reverse("main:get_experience_json"))
+        data = self.client.get(reverse("main:get_experience_json")).json()[0]["fields"]
+        self.assertEqual(data["title"], self.experience.title)
+        self.assertEqual(data["description"], self.experience.description)
+        self.assertEqual(data["category_display"], "Volunteer")
 
     def test_completed_experience(self):
         self.experience.ended_at = timezone.now()
@@ -59,7 +61,8 @@ class MainTest(TestCase):
         Experience.objects.all().delete()
         response = self.client.get(reverse("main:show_experience"))
 
-        self.assertContains(response, "No experience has been added yet.")
+        self.assertContains(response, "No experiences have been added or found yet.")
+        self.assertEqual(self.client.get(reverse("main:get_experience_json")).json(), [])
 
     # --- TEST EDUCATION ---
     def test_education_model(self):
@@ -74,9 +77,11 @@ class MainTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "educational.html")
-        self.assertContains(response, self.education.institution)
-        self.assertContains(response, self.education.field_of_study)
-        self.assertContains(response, "2025")
+        self.assertContains(response, reverse("main:get_education_json"))
+        data = self.client.get(reverse("main:get_education_json")).json()[0]["fields"]
+        self.assertEqual(data["institution"], self.education.institution)
+        self.assertEqual(data["field_of_study"], self.education.field_of_study)
+        self.assertEqual(data["start_year"], 2025)
 
     def test_empty_education_page(self):
         Education.objects.all().delete()
@@ -84,4 +89,5 @@ class MainTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "educational.html")
-        self.assertContains(response, "No education has been added yet.")
+        self.assertContains(response, "No educations have been added or found yet.")
+        self.assertEqual(self.client.get(reverse("main:get_education_json")).json(), [])
