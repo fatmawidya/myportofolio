@@ -35,6 +35,10 @@ class Experience(models.Model):
 # ============== EDUCATION ====================
 
 class Education(models.Model):  
+    starred_by = models.ManyToManyField(
+        User, related_name="starred_educations", blank=True
+    )
+
     DEGREE_CHOICES = [  
         ('elementary', 'Elementary School'),  
         ('junior_high', 'Junior High School'),  
