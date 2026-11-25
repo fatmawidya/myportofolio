@@ -63,3 +63,15 @@ class Education(models.Model):
     @property  
     def is_current(self):  # Fungsi buat ngecek apakah masih status siswa/mahasiswa aktif
         return self.end_year is None  # Mengembalikan True jika end_year kosong
+
+
+class Project(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    tech_stack = models.CharField(max_length=255)
+    project_url = models.URLField()
+    project_image_url = models.URLField(blank=True, default="")
+
+    def __str__(self):
+        return self.title

@@ -1,6 +1,6 @@
 from django.utils.html import strip_tags
 from rest_framework import serializers
-from main.models import Education, Experience
+from main.models import Education, Experience, Project
 
 
 class ExperienceSerializer(serializers.ModelSerializer):
@@ -100,3 +100,13 @@ class EducationSerializer(serializers.ModelSerializer):
         if request is None or not request.user.is_authenticated:
             return False
         return request.user in obj.starred_by.all()
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = [
+            "id", "title", "description", "tech_stack",
+            "project_url", "project_image_url",
+        ]
+        read_only_fields = ["id"]
