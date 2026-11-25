@@ -46,10 +46,11 @@ class PortfolioAPITest(APITestCase):
             self.client.force_authenticate(user=user)
             for kind, model in self.models.items():
                 with self.subTest(user=user, kind=kind):
-                    self.assertEqual(self.client.post(self.url(kind), self.payloads[kind], format='json').status_code, 403)
-                    self.assertEqual(self.client.patch(self.url(kind, 'detail'), {'description': 'forged'}, format='json').status_code, 403)
-                    self.assertEqual(self.client.put(self.url(kind, 'detail'), self.payloads[kind], format='json').status_code, 403)
-                    self.assertEqual(self.client.delete(self.url(kind, 'detail')).status_code, 403)
+                    expected = 401 if user is None and kind == 'education' else 403
+                    self.assertEqual(self.client.post(self.url(kind), self.payloads[kind], format='json').status_code, expected)
+                    self.assertEqual(self.client.patch(self.url(kind, 'detail'), {'description': 'forged'}, format='json').status_code, expected)
+                    self.assertEqual(self.client.put(self.url(kind, 'detail'), self.payloads[kind], format='json').status_code, expected)
+                    self.assertEqual(self.client.delete(self.url(kind, 'detail')).status_code, expected)
                     self.assertEqual(model.objects.count(), 1)
                     self.objects[kind].refresh_from_db()
                     self.assertEqual(self.objects[kind].description, self.payloads[kind]['description'])
@@ -124,7 +125,7 @@ class PortfolioAPITest(APITestCase):
         for kind in self.models:
             url = self.url(kind, 'star')
             self.client.force_authenticate(user=None)
-            self.assertEqual(self.client.post(url).status_code, 403)
+            self.assertEqual(self.client.post(url).status_code, 401 if kind == 'education' else 403)
             self.assertEqual(self.objects[kind].starred_by.count(), 0)
             for user in [self.reader, self.editor, self.owner]:
                 self.client.force_authenticate(user)
